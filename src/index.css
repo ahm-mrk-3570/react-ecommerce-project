@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+  --bg-color : #ffffff;
+  --bg-secondary-color : #242424;
+  --text-color : #242424;
+  --text-secondary-color : #ffffff;
+  --border-color : #242424;
+  --text-hover : #353535;
+  --shadow : rgba(0,0,0,0.1);
+  --list-item-hover : blue;
+  --coments-bg-color : #f6f6f6;
+  --footer-border-color : none;
+}
+
+:root:has(.body-dark) {
+  --bg-color : #242424;
+  --bg-secondary-color : #ffffff;
+  --text-color : #ffffff;
+  --text-secondary-color : #242424;
+  --border-color : #ffffff;
+  --text-hover : #919191;
+  --shadow : rgba(255,255,255,0.3);
+  --list-item-hover : yellow;
+  --coments-bg-color : #242424;
+  --footer-border-color : white;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Jost", sans-serif;
+  font-optical-sizing: auto;
+  scrollbar-width: none;
+}
+
+a {
+  font-weight: 500;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: var(--text-hover);
+}
+
+body {
+  width: 100vw;
+  margin: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border-color: var(--border-color);
+  transition: background-color 0.3s ease, color 0.3 ease;
+  position: relative;
+}
+
+#root > div {
+  width: 100vw;
+  height: 100svh;
+}
+
+.body-light {
+  width: 100%;
+  color : black;
+  background-color: white;
+  transition: color 1s;
+  border-color : var(--lightColor);
+  border-width: 0;
+  border-style: solid;
+}
+
+.body-dark {
+  width: 100%;
+  color: white;
+  background: #242424;
+  transition: color 1s;
+  border-color : var(--darkColor);
+  border-width: 0;
+  border-style: solid;
+}

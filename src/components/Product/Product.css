@@ -1,0 +1,187 @@
+.item-container {
+  width: 100%;
+  min-height: 400px;
+  padding: 1rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9/12;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background-color: #e0e0e0;
+}
+
+.image-container > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.tools {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  gap: 1rem;
+  z-index: 10;
+}
+
+.tools > div, .tools > a {
+  aspect-ratio: 1 / 1;
+  background-color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(75px);
+  cursor: pointer;
+}
+
+.add-to-favorite > svg, .show-product > svg {
+  fill: black;
+}
+
+.tools > div:nth-child(1) {
+  transition: transform 125ms ease-in, scale 0.3s;
+}
+
+.tools > div:nth-child(2) {
+  transition: transform 250ms ease-in, scale 0.3s;
+}
+
+.tools > a {
+  transition: transform 470ms ease-in, scale 0.3s;
+}
+
+.delete-from-wishlist {
+  transition: transform 620ms ease-in, scale 0.3s;
+}
+
+.image-container:hover .tools > div, .image-container:hover .tools > a, .delete-from-wishlist {
+  transform: translateX(0);
+}
+
+.add-to-favorite:hover {
+  scale: 1.5;
+  background-color: transparent;
+  filter: drop-shadow(0 0 5px #ff4b4b)
+          drop-shadow(0 0 5px #ff4b4b)
+          drop-shadow(0 0 5px #ff4b4b)
+          drop-shadow(0 0 5px #ff4b4b);
+}
+
+.campare-product:hover{
+  scale: 1.5;
+  background-color: transparent;
+  filter: drop-shadow(0 0 5px #ffd54b)
+          drop-shadow(0 0 5px #ffd54b)
+          drop-shadow(0 0 5px #ffd54b)
+          drop-shadow(0 0 5px #ffd54b);
+}
+
+.delete-from-wishlist:hover {
+  scale: 1.5;
+  background-color: transparent;
+  filter: drop-shadow(0 0 5px #eee)
+          drop-shadow(0 0 5px #eee)
+          drop-shadow(0 0 5px #eee)
+          drop-shadow(0 0 5px #eee);
+}
+
+.show-product:hover{
+  scale: 1.5;
+  background-color: transparent;
+  filter: drop-shadow(0 0 5px #4bffd8)
+          drop-shadow(0 0 5px #4bffd8)
+          drop-shadow(0 0 5px #4bffd8)
+          drop-shadow(0 0 5px #4bffd8);
+}
+
+.image-container:hover .add-to-cart-btn-container {
+  transform: translateX(0);
+}
+
+.add-to-cart-btn-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, black, transparent);
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: center;
+  padding-bottom: 5px;
+  z-index: 5;
+  transform: translateY(100%);
+  transition: transform 0.5s ease-in;
+}
+
+.add-to-cart-btn {
+  width: 97%;
+  background-color: white;
+  border: none;
+  align-self: flex-end;
+  padding: 0.75rem 0;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.5s ease, width 0.5s ease;
+}
+
+.add-to-cart-btn:hover {
+  transform: translateY(-20px);
+  width: 50%;
+}
+
+.detail {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  padding: 0.75rem 0;
+  gap: 0.2rem;
+}
+
+.title-product {
+  font-size: large;
+  font-weight: 500;
+}
+
+.description-product {
+  font-size: small;
+  font-weight: normal;
+}
+
+.price-container {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 1rem;
+  font-size: medium;
+  font-weight: 600;
+}
+
+.price-container > p:last-child {
+  text-decoration: line-through;
+  opacity: 0.4;
+}

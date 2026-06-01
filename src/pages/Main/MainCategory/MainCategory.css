@@ -1,0 +1,217 @@
+/* handle Main Category Styles */
+.category-main {
+  width: 87%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  overflow-x: hidden;
+  margin: 5rem auto;
+}
+
+/* header styles for category section */
+.category-header {
+  width: 100%;
+  height: 75px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+}
+
+.title-category > h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  max-lines: 1;
+  text-wrap: nowrap;
+}
+
+.change-category {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: center;
+  gap: 1rem;
+}
+
+/* handle transform on the Category Items */
+.change-category > button {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 0.75rem;
+  background-color: var(--bg-secondary-color);
+  color: var(--text-secondary-color);
+  cursor: pointer;
+}
+
+.change-category > button:disabled {
+  opacity: 0.2;
+  cursor: default;
+}
+
+/* Category Items Styles */
+.category-container {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 1rem;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  list-style: none;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 auto;
+}
+
+/* Card Styles */
+.card-container {
+  flex: 0 0 400px;
+  min-width: 400px;
+  height: 480px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: transform 1s;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  will-change: transform, opacity;
+  margin: 0.5rem 0;
+  overflow: hidden;
+  padding: 0.5rem;
+}
+
+.card-category-item {
+  width: 100%;
+  height: 100%;
+}
+
+.card-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  box-shadow: 0 0 10px var(--shadow);
+  border-radius: 1rem;
+}
+
+.card-detail {
+  width: 100%;
+  height: 70%;
+  position: absolute;
+  bottom: 0;
+  background: linear-gradient(to top, black, transparent);
+  transform: translateY(100%);
+  transition: transform 0.5s;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-container:hover .card-detail {
+  transform: translateY(0%);
+}
+
+.card-container:hover .card-detail > a > button {
+  opacity: 1;
+}
+
+.card-detail > a {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-end;
+}
+
+.card-detail > a > button {
+  width: 97%;
+  padding: 0.75rem;
+  align-self: flex-end;
+  margin-bottom: 0.4rem;
+  opacity: 0;
+  transition: opacity 0.5s ease-in;
+  background-color: white;
+  border: none;
+  border-radius: 0.5rem;  
+  transition: background-image 1.5s ease-in, transform 0.5s ease-in;
+  cursor: pointer;
+  font-size: large;
+}
+
+.card-detail > a > button:hover {
+  background-image: linear-gradient(to right, lightblue, #dde6ad);
+  transform: translateY(-10px);
+}
+
+/* Responsive */
+/* below 300px */
+@media (max-width : 299px) {
+  .card-container {
+    flex: 0 0 260px;
+    min-width: 260px;
+    height: 320px;
+  }
+
+  .title-category > h1 {
+    font-size: small;
+  }
+
+  .change-category > button {
+    width: 28px;
+    height: 28px;
+    border-radius: 0.25rem;
+    padding: 0.2rem;
+  }
+
+  .category-header {
+    padding: 0 1rem;
+  }
+}
+
+/* below 480px -- above 300px */
+@media (min-width : 300px) and (max-width : 479px) {
+  .card-container {
+    flex: 0 0 260px;
+    min-width: 260px;
+    height: 320px;
+  }
+
+  .title-category > h1 {
+    font-size: small;
+  }
+
+  .change-category > button {
+    width: 28px;
+    height: 28px;
+    border-radius: 0.25rem;
+    padding: 0.2rem;
+  }
+
+  .category-header {
+    padding: 0 1rem;
+  }
+}
+
+/* below 768px -- above 480px */
+@media (min-width : 480px) and (max-width : 767px) {
+  .title-category > h1 {
+    font-size: x-large;
+  }
+}

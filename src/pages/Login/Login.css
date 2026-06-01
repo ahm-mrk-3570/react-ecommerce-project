@@ -1,0 +1,340 @@
+/* main styles */
+.login-body {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* main style for left Side */
+.left-side-login {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: start;
+  height: 100%;
+  background: url(/login/image.svg) center/cover no-repeat;
+}
+
+/* main style for right Side */
+.right-side-login {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  padding-left: 2rem;
+}
+
+
+/* fields Styles */
+.fields-container-login {
+  width: 75%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.fields-container > div-login {
+  width: 100%;
+}
+
+/* top fields styles */
+.top-field-container-login {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+}
+
+.top-filed-title-login {
+  font-weight: bold;
+}
+
+.top-field-description-login {
+  font-weight: normal;
+}
+
+/* middle section styles */
+.middle-field-container-login {
+  width: 75% !important;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  gap: 1rem;
+}
+
+.middle-input-field-login {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  gap: 0.2rem;
+}
+
+.middle-input-field-login > label {
+  font-size: small;
+}
+
+.middle-input-field-login > input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  outline: none;
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  font-size: large;
+}
+
+.middle-terms-field-login {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 0.5rem;
+}
+
+.middle-terms-field-login span {
+  font-weight: bold;
+}
+
+/* bottom styles */
+.bottom-field-container-login {
+  width: 75% !important;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+}
+
+.forget-container-login {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0 0.75rem 0;
+}
+
+.remember-login {
+  display: flex;
+  flex-direction: row;
+  gap: 0.35rem;
+}
+
+.remember-login > label {
+  max-lines: 1 !important;
+}
+
+.forget > a {
+  max-lines: 1 !important;
+}
+
+.btn-signup-login {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: normal;
+  background-color: var(--bg-secondary-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary-color);
+  border-radius: 0.75rem;
+}
+
+
+/* theme button styles */
+.change-theme {
+  padding: 0.5rem 1rem;
+  min-width: 120px;
+  max-width: 200px;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+.theme-selector {
+  width: 150px;
+  display: flex;
+  list-style: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  gap: 0.5rem;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 0.3rem;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  transition: opacity 0.3s;
+  opacity: 0;
+  z-index: 50;
+  display: none;
+}
+
+.theme-selector > li {
+  background-color: var(--bg-secondary-color);
+  color: var(--bg-color);
+  min-width: 100%;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+/* Responsive */
+/* below 300px */
+@media (max-width : 299px) {
+  .left-side-login {
+    display: none;
+  }
+
+  .right-side-login {
+    padding-left: 0;
+  }
+
+  .middle-field-container-login {
+    width: 100% !important;
+  }
+  
+  .fields-container-login {
+    width: 100%;
+    padding: 0 2rem;
+  }
+
+  .top-filed-title-login {
+    font-size: 1.5rem;
+  }
+
+  .top-field-description-login {
+    font-size: small;
+  }
+
+  .bottom-field-container-login {
+    width: 100% !important;
+  }
+}
+
+/* below 480px -- above 300px */
+@media (min-width : 300px) and (max-width : 479px) {
+  .left-side-login {
+    display: none;
+  }
+
+  .right-side-login {
+    padding-left: 0;
+  }
+
+  .top-filed-title-login {
+    font-size: 1.5rem;
+  }
+  
+  .top-field-description-login {
+    font-size: small;
+  }
+  
+  .middle-field-container-login {
+    width: 100% !important;
+  }
+
+  .fields-container-login {
+    width: 100%;
+    padding: 0 2rem;
+  }
+
+  .bottom-field-container-login {
+    width: 100% !important;
+  }
+}
+
+/* below 768px -- above 480px */
+@media (min-width : 480px) and (max-width : 767px) {
+  .left-side-login {
+    display: none;
+  }
+
+  .fields-container-login {
+    width: 80%;
+  }
+
+  .top-filed-title-login {
+    font-size: 1.5rem;
+  }
+
+  .top-field-description-login {
+    font-size: small;
+  }
+
+  .middle-field-container-login {
+    width: 100% !important;
+  }
+
+  .bottom-field-container-login {
+    width: 100% !important;
+  }
+}
+
+/* below 1024px -- above 768px */
+@media (min-width : 768px) and (max-width : 1023px) {
+  .left-side-login {
+    flex: 3;
+  }
+
+  .right-side-login {
+    flex: 2;
+    padding-left: 0;
+  }
+
+  .fields-container-login {
+    width: 100%;
+    padding: 0 1rem;
+  }
+
+  .top-field-description-login {
+    font-size: 0.85rem;
+  }
+
+  .middle-field-container-login {
+    width: 100% !important;
+  }
+
+  .bottom-field-container-login {
+    width: 100% !important;
+  }
+}
+
+/* below 1280px -- above 1024px */
+@media (min-width : 1024px) and (max-width : 1279px) {
+  .fields-container-login {
+    width: 80%;
+  }
+
+  .middle-field-container-login {
+    width: 100% !important;
+  }
+
+  .bottom-field-container-login {
+    width: 100% !important;
+  }
+}

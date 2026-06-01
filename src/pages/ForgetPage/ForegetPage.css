@@ -1,0 +1,150 @@
+/* main styles */
+.forget-body {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* main style for left Side */
+.left-side-forget {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: start;
+  height: 100%;
+  background: url(/login/forget.svg) center/cover no-repeat;
+}
+
+/* main style for right Side */
+.right-side-forget {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  padding: 0 2rem;
+  box-sizing: border-box;
+}
+
+.fields-forget {
+  width: 60%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.back-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.top-fields-container-forget {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+}
+
+.top-fields-container-forget > h1 {
+  font-size: xx-large;
+  color: var(--text-color);
+}
+
+.top-fields-container-forget > h3 {
+  font-size: 0.75rem;
+  max-width: 300px;
+  font-weight: normal;
+}
+
+.middle-fields-container-forget {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: 0.75rem;
+}
+
+.bottom-fields-container-forget {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+}
+
+.authorization-btn {
+  width: 100%;
+  padding-block: 1rem;
+  font-size: 1rem;
+  border-radius: .75rem;
+  border: none;
+  background-color: var(--bg-secondary-color);
+  color: var(--text-secondary-color);
+  cursor: pointer;
+  outline: none;
+}
+
+/* Responsive */
+/* below 300px */
+@media (max-width : 299px) {
+  .left-side-forget {
+    display: none;
+  }
+
+  .fields-forget {
+    width: 100%;
+  }
+
+  .top-fields-container-forget > h1 {
+    font-size: 1.5rem;
+  }
+}
+
+/* below 480px -- above 300px */
+@media (min-width : 300px) and (max-width : 479px) {
+  .left-side-forget {
+    display: none;
+  }
+
+  .fields-forget {
+    width: 100%;
+  }
+
+  .top-fields-container-forget > h1 {
+    font-size: 1.5rem;
+  }
+}
+
+/* below 768px -- above 480px */
+@media (min-width : 480px) and (max-width : 767px) {
+  .left-side-forget {
+    display: none;
+  }
+
+  .fields-forget {
+    width: 100%;
+  }
+
+  .top-fields-container-forget > h1 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width : 768px) and (max-width : 1023px) {
+  .fields-forget {
+    width: 80%;
+  }
+}

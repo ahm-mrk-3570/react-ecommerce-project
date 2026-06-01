@@ -1,0 +1,25 @@
+.address-tab-profile {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  padding-left: 2rem;
+  gap: 1rem;
+}
+
+.add-new-address-button {
+  width: 300px;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--bg-secondary-color);
+  color: var(--text-secondary-color);
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+}

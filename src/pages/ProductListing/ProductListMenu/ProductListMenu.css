@@ -1,0 +1,165 @@
+.product-listing-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  gap: 1.5rem;
+  padding: 1.75rem;
+  flex: 2;
+  min-width: 350px;
+}
+
+.product-plm-title {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.product-plm-title > h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.product-plm-title {
+  cursor: pointer;
+}
+
+.product-listing-menu > div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  gap: 0.75rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.category-selector-plm {
+  width: 100%;
+  height: auto;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  gap: 0.3rem;
+}
+
+.category-selector-plm > li {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 0.5rem;
+  padding: 0.35rem;
+  cursor: pointer;
+}
+
+.category-selector-plm > li > label {
+  flex: 1;
+  cursor: pointer;
+}
+
+.category-selector-plm input {
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.price-enter {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 0.75rem;
+  padding: 0.35rem;
+}
+
+.price-enter > input {
+  padding: 0.75rem;
+  width: 50%;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.color-filter-plm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  list-style: none;
+  gap: 0.75rem;
+}
+
+.color-container-plm {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 0.75rem;
+}
+
+.color-filter-plm > li {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.35rem;
+  cursor: pointer;
+}
+
+.color-container-plm > label {
+  cursor: pointer;
+}
+
+.size-filter-plm {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  list-style: none;
+  gap: 0.75rem;
+}
+
+.size-filter-plm > li {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.35rem;
+}
+
+.size-container-plm {
+  flex: 1;
+  align-self: flex-start;
+  text-align: start;
+}
+
+.size-container-plm {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: start;
+  gap: 0.75rem;
+}
+
+.size-container-plm > label {
+  flex: 1;
+  cursor: pointer;
+}
+
+.size-container-plm > input {
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
