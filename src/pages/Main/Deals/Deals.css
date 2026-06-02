@@ -98,7 +98,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background: url(main-images/banner-main-images/banner.jpg) #e0e0e0 center no-repeat;
+  background: url(/main-images/banner-main-images/banner.jpg) #e0e0e0 center no-repeat;
   background-size: cover;
 }
 

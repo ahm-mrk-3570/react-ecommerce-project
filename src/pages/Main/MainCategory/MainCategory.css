@@ -1,3 +1,13 @@
+/* Swiper Styles */
+.swiper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.swiper-slide {
+  height: auto;
+}
+
 /* handle Main Category Styles */
 .category-main {
   width: 87%;
@@ -40,15 +50,16 @@
 .change-category > button {
   width: 45px;
   height: 45px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+  background-color: var(--bg-secondary-color);
+  color: var(--text-secondary-color);
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border: none;
-  border-radius: 0.75rem;
-  background-color: var(--bg-secondary-color);
-  color: var(--text-secondary-color);
-  cursor: pointer;
 }
 
 .change-category > button:disabled {
@@ -77,23 +88,12 @@
 
 /* Card Styles */
 .card-container {
-  flex: 0 0 400px;
-  min-width: 400px;
-  height: 480px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+  height: 600px;
   position: relative;
   border-radius: 0.75rem;
-  cursor: pointer;
-  transition: transform 1s;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  will-change: transform, opacity;
-  margin: 0.5rem 0;
   overflow: hidden;
-  padding: 0.5rem;
+  cursor: pointer;
 }
 
 .card-category-item {
@@ -160,58 +160,8 @@
   transform: translateY(-10px);
 }
 
-/* Responsive */
-/* below 300px */
-@media (max-width : 299px) {
+@media (max-width: 1150px) {
   .card-container {
-    flex: 0 0 260px;
-    min-width: 260px;
-    height: 320px;
-  }
-
-  .title-category > h1 {
-    font-size: small;
-  }
-
-  .change-category > button {
-    width: 28px;
-    height: 28px;
-    border-radius: 0.25rem;
-    padding: 0.2rem;
-  }
-
-  .category-header {
-    padding: 0 1rem;
-  }
-}
-
-/* below 480px -- above 300px */
-@media (min-width : 300px) and (max-width : 479px) {
-  .card-container {
-    flex: 0 0 260px;
-    min-width: 260px;
-    height: 320px;
-  }
-
-  .title-category > h1 {
-    font-size: small;
-  }
-
-  .change-category > button {
-    width: 28px;
-    height: 28px;
-    border-radius: 0.25rem;
-    padding: 0.2rem;
-  }
-
-  .category-header {
-    padding: 0 1rem;
-  }
-}
-
-/* below 768px -- above 480px */
-@media (min-width : 480px) and (max-width : 767px) {
-  .title-category > h1 {
-    font-size: x-large;
+    height: 450px;
   }
 }

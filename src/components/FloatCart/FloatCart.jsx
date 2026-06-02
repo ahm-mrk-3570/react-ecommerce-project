@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import './FloatCart.css';
 import CartFloatItem from './component/CartFloatItem';
 import { Link } from 'react-router-dom';
@@ -20,7 +20,7 @@ export default function FloatCart({ floatCartRef }) {
         <h2>$200.00</h2>
       </div>
       <div className="buttons-float">
-        <button className='go-to-cart-float'>
+        {/* <button className='go-to-cart-float'>
           <Link to="/cart">
             View Cart
           </Link>
@@ -29,7 +29,7 @@ export default function FloatCart({ floatCartRef }) {
           <Link to="/checkout">
             Checkout
           </Link>
-        </button>
+        </button> */}
       </div>
     </div>
   )

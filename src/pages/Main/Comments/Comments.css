@@ -1,24 +1,21 @@
+/* Swiper Styles */
+.swiper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.swiper-slide {
+  height: auto;
+}
+
 .comments-main-container {
   width: 100%;
   height: auto;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   background-color: var(--coments-bg-color);
   margin: 5rem auto;
-  padding: 5rem 0;
-}
-
-/* handle Main comments Styles */
-.comments-main {
-  width: 87%;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: center;
-  overflow-x: hidden;
+  padding: 5rem 2rem;
 }
 
 /* header styles for comments section */
@@ -67,44 +64,19 @@
   cursor: default;
 }
 
-/* comments Items Styles */
-.comments-container {
-  width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-  gap: 1rem;
-  flex-wrap: nowrap;
-  white-space: nowrap;
-  list-style: none;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  margin: 0 auto;
-}
-
 /* Card Styles */
 .card-container-comments {
-  flex: 0 0 400px;
-  min-width: 400px;
+  width: 100%;
   height: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: start;
+  position: relative;
   border-radius: 0.75rem;
-  overflow: hidden;
-  box-shadow: 0 0 10px var(--shadow);
   cursor: pointer;
-  transition: transform 1s;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  will-change: transform, opacity;
-  margin: 0.5rem 0;
-  padding: 0.75rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  padding: 1rem;
+}
+
+.swiper-slide {
+  padding: 15px !important;
 }
 
 .top-stars {
@@ -123,9 +95,8 @@
 
 .middle-content-comment {
   width: 100%;
-  overflow: auto;
-  text-wrap: wrap;
-  flex: 1;
+  max-height: 130px;
+  overflow: scroll;
 }
 
 .profile-comments {
@@ -136,7 +107,7 @@
   justify-content: start;
   border: none;
   background-color: var(--coments-bg-color);
-  margin-top: 0.25rem;
+  margin-top: 1rem;
 }
 
 .profile-image {
