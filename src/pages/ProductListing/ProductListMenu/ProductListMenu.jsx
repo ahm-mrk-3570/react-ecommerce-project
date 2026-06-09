@@ -1,125 +1,198 @@
-import { useRef, useState } from 'react';
-import CategoryPLM from '../Components/CategoryPLM';
-import ColorPLM from '../Components/ColorPLM';
-import SizePLM from '../Components/SizePLM';
-import './ProductListMenu.css';
+import CategoryPLM from "../Components/CategoryPLM";
+import ColorPLM from "../Components/ColorPLM";
+import SizePLM from "../Components/SizePLM";
+import "./ProductListMenu.css";
+import GlobalContext from "../../../context/Context";
+import { useContext, useEffect, useRef, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import * as _ from 'lodash';
+import categoryData from "../../../constants/CategoryData";
+
 
 export default function ProductListMenu() {
-  const category = useRef(null);
-  const price = useRef(null);
-  const color = useRef(null);
-  const size = useRef(null);
-  const svgCategory = useRef(null);
-  const svgPrice = useRef(null);
-  const svgColor = useRef(null);
-  const svgSize = useRef(null);
+  /* Context */
+  const { loading, setLoading, products } = useContext(GlobalContext);
+  /* Context */
 
-  const handleCollapse = (which) => {
-    switch (which) {
-      case "categories":
-        if(category.current.style.display === "flex") {
-          category.current.style.display = "none";
-          svgCategory.current.style.transform = "rotate(-90deg)"
-        } else {
-          category.current.style.display = "flex";
-          svgCategory.current.style.transform = "rotate(0deg)"
-        }
-        break;
-      case "price":
-        if(price.current.style.display === "flex") {
-          price.current.style.display = "none";
-          svgPrice.current.style.transform = "rotate(-90deg)"
-        } else {
-          price.current.style.display = "flex";
-          svgPrice.current.style.transform = "rotate(0deg)"
-        }
-        break;
-      case "color":
-        if(color.current.style.display === "flex") {
-          color.current.style.display = "none";
-          svgColor.current.style.transform = "rotate(-90deg)"
-        } else {
-          color.current.style.display = "flex";
-          svgColor.current.style.transform = "rotate(0deg)"
-        }
-        break;
-      case "size":
-        if(size.current.style.display === "flex") {
-          size.current.style.display = "none";
-          svgSize.current.style.transform = "rotate(-90deg)"
-        } else {
-          size.current.style.display = "flex";
-          svgSize.current.style.transform = "rotate(0deg)"
-        }
-        break;
+  /* States */
+  const [filterOpen, setFilterOpen] = useState(0);
+  /* States */
+
+  /* Search Params */
+  const [searchParams, setSearchParams] = useSearchParams();
+  const category = searchParams.get("category");
+  const minPrice = searchParams.get('minPrice');
+  const maxPrice = searchParams.get('maxPrice');
+  /* Search Params */
+
+  /* Navigation */
+  const navigate = useNavigate();
+  /* Navigation */
+
+  /* Use Ref */
+  const fromPrice = useRef(null);
+  const toPrice = useRef(null);
+  /* Use Ref */
+
+  /* Effects */
+  useEffect(() => {
+    if(category) {
+      setFilterOpen(4);
+    } else {
+      setFilterOpen(0);
     }
-  }
+  }, [category])
+  /* Effects */
+
+  const handleSubmitPrice = () => {
+    setLoading(true);
+    if(_.isEmpty(fromPrice.current.value) || _.isEmpty(fromPrice.current.value)) {
+      navigate('/products');
+    } else {
+      setSearchParams(prev => {
+        const params = new URLSearchParams(prev);
+
+        params.set("minPrice", fromPrice.current.value);
+        params.set("maxPrice", toPrice.current.value);
+
+        return params;
+      })
+    }
+
+    setLoading(false);
+  };
 
   return (
-    <div className='product-listing-menu'>
-      <div className="product-ctegories-plm">
-        <div onClick={() => handleCollapse('categories')}  className="product-plm-title">
+    <div className="product-listing-menu">
+      <div style={{ height: filterOpen === 4 ? "auto" : "45px", transition: "height 0.5s ease-in"}} className="product-ctegories-plm">
+        <div className="product-plm-title" onClick={() => setFilterOpen(4)}>
           <h2>Product Categories</h2>
-          <svg ref={svgCategory} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-down" viewBox="0 0 16 16">
-            <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"></path>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            className="bi bi-chevron-down"
+            viewBox="0 0 16 16"
+            style={{ rotate: filterOpen === 4 && "-90deg" }}
+          >
+            <path
+              fillRule="evenodd"
+              d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"
+            ></path>
           </svg>
         </div>
-        <ul ref={category} className='category-selector-plm'>
-          <CategoryPLM type="men" title="Men" />
-          <CategoryPLM type="women" title="Women" />
-          <CategoryPLM type="kids" title="Kids" />
-          <CategoryPLM type="bags" title="Bags" />
-          <CategoryPLM type="belts" title="Belts" />
-          <CategoryPLM type="wallets" title="Wallets" />
-          <CategoryPLM type="watches" title="Watches" />
-          <CategoryPLM type="accessories" title="Accessories" />
-          <CategoryPLM type="winter-wear" title="Winter Wear" />
+        <ul className="category-selector-plm">
+          {categoryData.map((c) => {
+            return (
+              <CategoryPLM
+                title={c.title}
+                type={c.title}
+                key={c.title}
+                url={c.url}
+                filterOpen={filterOpen}
+              />
+            );
+          })}
         </ul>
       </div>
-      <div className="filter-by-price-plm">
-        <div onClick={() => handleCollapse('price')} className="product-plm-title">
+      <div style={{ height: filterOpen === 1 ? "auto" : "45px", transition: "height 0.5s ease-in", paddingInline: "0"}} className="filter-by-price-plm">
+        <div className="product-plm-title" onClick={() => setFilterOpen(1)}>
           <h2>Filter By Price</h2>
-          <svg ref={svgPrice} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-down" viewBox="0 0 16 16">
-            <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"></path>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            className="bi bi-chevron-down"
+            viewBox="0 0 16 16"
+            style={{ rotate: filterOpen === 1 && "-90deg" }}
+          >
+            <path
+              fillRule="evenodd"
+              d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"
+            ></path>
           </svg>
         </div>
-        <div ref={price} className="price-enter">
-          <input className='from-price' placeholder='from' type="text" />
-          <input className='to-price' placeholder='to' type="text" />
+        <div className="price-enter" style={{ display: filterOpen === 1 ? "flex" : "none"}}>
+          <input
+            ref={fromPrice}
+            className="from-price"
+            placeholder="from"
+            type="text"
+            placeholder={minPrice || "from"}
+          />
+          <input
+            ref={toPrice}
+            className="to-price"
+            type="text"
+            placeholder={maxPrice || "to"}
+          />
         </div>
+        <button
+          disabled={loading === true}
+          onClick={handleSubmitPrice}
+          className="submit-price-filter"
+          style={{ display: filterOpen === 1 ? "block" : "none"}}
+        >
+          Submit
+        </button>
       </div>
-      <div className="filter-by-color">
-        <div onClick={() => handleCollapse('color')} className="product-plm-title">
+      <div style={{ height: filterOpen === 2 ? "auto" : "45px", transition: "height 0.5s ease-in"}} className="filter-by-color">
+        <div className="product-plm-title" onClick={() => setFilterOpen(2)}>
           <h2>Filter By Color</h2>
-          <svg ref={svgColor} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-down" viewBox="0 0 16 16">
-            <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"></path>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            className="bi bi-chevron-down"
+            viewBox="0 0 16 16"
+            style={{ rotate: filterOpen === 3 && "-90deg" }}
+          >
+            <path
+              fillRule="evenodd"
+              d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"
+            ></path>
           </svg>
         </div>
-        <ul ref={color} className="color-filter-plm">
-          <ColorPLM title='Red' count={10} />
-          <ColorPLM title='Blue' count={5} />
-          <ColorPLM title='Orange' count={2} />
-          <ColorPLM title='Black' count={11} />
-          <ColorPLM title='Green' count={7} />
-          <ColorPLM title='Yellow' count={1} />
+        <ul className="color-filter-plm">
+          <ColorPLM title="Red" count={products?.filter(p => p.colors.includes("Red")).length || 0} filterOpen={filterOpen} />
+          <ColorPLM title="Blue" count={products?.filter(p => p.colors.includes("Blue")).length || 0} filterOpen={filterOpen} />
+          <ColorPLM title="Orange" count={products?.filter(p => p.colors.includes("Orange")).length || 0} filterOpen={filterOpen} />
+          <ColorPLM title="Black" count={products?.filter(p => p.colors.includes("Black")).length || 0} filterOpen={filterOpen} />
+          <ColorPLM title="Green" count={products?.filter(p => p.colors.includes("Green")).length || 0} filterOpen={filterOpen} />
+          <ColorPLM title="Yellow" count={products?.filter(p => p.colors.includes("Yellow")).length || 0} filterOpen={filterOpen} />
         </ul>
       </div>
-      <div className="filter-by-size">
-        <div onClick={() => handleCollapse('size')} className="product-plm-title">
+      <div style={{ height: filterOpen === 3 ? "auto" : "45px", transition: "height 0.5s ease-in"}} className="filter-by-size">
+        <div className="product-plm-title" onClick={() => setFilterOpen(3)}>
           <h2>Filter By Size</h2>
-          <svg ref={svgSize} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-down" viewBox="0 0 16 16">
-            <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"></path>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            className="bi bi-chevron-down"
+            viewBox="0 0 16 16"
+            style={{ rotate: filterOpen === 3 && "-90deg" }}
+          >
+            <path
+              fillRule="evenodd"
+              d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"
+            ></path>
           </svg>
         </div>
-        <ul ref={size} className="size-filter-plm">
-          <SizePLM type='small' title='S' count={10} />
-          <SizePLM type='medium' title='M' count={10} />
-          <SizePLM type='large' title='L' count={10} />
-          <SizePLM type='xlarge' title='XL' count={10} />
-          <SizePLM type='xxlarge' title='XXL' count={10} />
-          <SizePLM type='xxxlarge' title='XXXL' count={10} />
+        <ul className="size-filter-plm">
+          <SizePLM type="small" title="S" count={products?.filter(p => p.size.includes("S")).length || 0} filterOpen={filterOpen} />
+          <SizePLM type="medium" title="M" count={products?.filter(p => p.size.includes("M")).length || 0} filterOpen={filterOpen} />
+          <SizePLM type="large" title="L" count={products?.filter(p => p.size.includes("L")).length || 0} filterOpen={filterOpen} />
+          <SizePLM type="xlarge" title="XL" count={products?.filter(p => p.size.includes("XL")).length || 0} filterOpen={filterOpen} />
+          <SizePLM type="xxlarge" title="XXL" count={products?.filter(p => p.size.includes("XXL")).length || 0} filterOpen={filterOpen} />
+          <SizePLM type="xxxlarge" title="XXXL" count={products?.filter(p => p.size.includes("XXXL")).length || 0} filterOpen={filterOpen} />
         </ul>
       </div>
     </div>
-  )
+  );
 }

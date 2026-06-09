@@ -11,6 +11,7 @@
   --list-item-hover : blue;
   --coments-bg-color : #f6f6f6;
   --footer-border-color : none;
+  --bg-glass: rgba(0,0,0, 0.2);
 }
 
 :root:has(.body-dark) {
@@ -24,6 +25,7 @@
   --list-item-hover : yellow;
   --coments-bg-color : #242424;
   --footer-border-color : white;
+  --bg-glass: rgba(255,255,255, 0.2);
 }
 
 * {

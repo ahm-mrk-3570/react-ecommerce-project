@@ -7,7 +7,6 @@ import './Cart.css';
 export default function Cart() {
   return (
     <div className='checkout-page'>
-      <Header />
       <div className="checkout-conent">
         <h2>Checkout</h2>
         <div className="checkout-section">

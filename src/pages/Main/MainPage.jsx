@@ -14,7 +14,6 @@ export default function MainPage({ menuRef, btnMenuRef, openMenu }) {
   return (
     <>
       <title>Crimba</title>
-      <Header btnMenuRef={btnMenuRef} openMenu={openMenu} />
       <MainBanner />
       <MainCategory />
       <BestSeller />

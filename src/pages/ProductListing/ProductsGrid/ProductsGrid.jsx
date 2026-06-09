@@ -1,76 +1,245 @@
-import Product from '../../../components/Product/Product';
-import './ProductsGrid.css';
+import Product from "../../../components/Product/Product";
+import GlobalContext from "../../../context/Context";
+import ProductCardSkeleton from "../../../components/loadingComponents/ProductCardSkeleton";
+
+import "./ProductsGrid.css";
+
+import { useContext, useEffect, useState } from "react";
+import ProductListShow from "./ProductListShow/ProductListShow";
+import { useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { getProducts } from "../../../services/productServices";
 
 export default function ProductsGrid() {
+  /* State */
+  const [showOrder, setShowOrder] = useState("grid");
+  /* State */
+
+  /* Context */
+  const { products, setProducts, loading, setLoading, page } = useContext(GlobalContext);
+  /* Context */
+
+  /* SearchParams */
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get("category");
+  const size = searchParams.get("size");
+  const color = searchParams.get("color");
+  /* SearchParams */
+
+  useEffect(() => {
+    const fetchFilteredProducts = () => {
+      setLoading(true);
+      try {
+        const { data } = getProducts({ category, size, color, page });
+        setProducts(data);
+        setLoading(false);
+      } catch(e) {
+        console.log(e.message);
+        toast.error('Something Went Wrong...');
+        setLoading(false);
+      }
+    }
+
+    fetchFilteredProducts();
+  }, [category, size, color, page])
+
   return (
-    <div className='products-grid'>
-      <div className="products-header-plg">
-        <div className="left-products-header-plg">
-          <div className='show-icon'>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" version="1.1" viewBox="0 0 24 24">
-              <path d="M9.5,1c.551,0,1,.449,1,1v7.5c0,.551-.449,1-1,1H2c-.551,0-1-.449-1-1V2c0-.551.449-1,1-1h7.5M9.5,0H2C.895,0,0,.895,0,2v7.5c0,1.105.895,2,2,2h7.5c1.105,0,2-.895,2-2V2c0-1.105-.895-2-2-2h0Z"/>
-              <path d="M22,1c.551,0,1,.449,1,1v7.5c0,.551-.449,1-1,1h-7.5c-.551,0-1-.449-1-1V2c0-.551.449-1,1-1h7.5M22,0h-7.5c-1.105,0-2,.895-2,2v7.5c0,1.105.895,2,2,2h7.5c1.105,0,2-.895,2-2V2c0-1.105-.895-2-2-2h0Z"/>
-              <path d="M9.5,13.5c.551,0,1,.449,1,1v7.5c0,.551-.449,1-1,1H2c-.551,0-1-.449-1-1v-7.5c0-.551.449-1,1-1h7.5M9.5,12.5H2c-1.105,0-2,.895-2,2v7.5c0,1.105.895,2,2,2h7.5c1.105,0,2-.895,2-2v-7.5c0-1.105-.895-2-2-2h0Z"/>
-              <path d="M22,13.5c.551,0,1,.449,1,1v7.5c0,.551-.449,1-1,1h-7.5c-.551,0-1-.449-1-1v-7.5c0-.551.449-1,1-1h7.5M22,12.5h-7.5c-1.105,0-2,.895-2,2v7.5c0,1.105.895,2,2,2h7.5c1.105,0,2-.895,2-2v-7.5c0-1.105-.895-2-2-2h0Z"/>
-            </svg>
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" version="1.1" viewBox="0 0 35 24">
-              <path d="M6.634,1.838c2.436,0,4.418,1.982,4.418,4.418s-1.982,4.418-4.418,4.418-4.418-1.982-4.418-4.418S4.197,1.838,6.634,1.838M6.634.838C3.641.838,1.215,3.264,1.215,6.256s2.426,5.418,5.418,5.418,5.418-2.426,5.418-5.418S9.626.838,6.634.838h0Z"/>
-              <path d="M6.634,13.66c2.436,0,4.418,1.982,4.418,4.418s-1.982,4.418-4.418,4.418-4.418-1.982-4.418-4.418,1.982-4.418,4.418-4.418M6.634,12.66c-2.992,0-5.418,2.426-5.418,5.418s2.426,5.418,5.418,5.418,5.418-2.426,5.418-5.418-2.426-5.418-5.418-5.418h0Z"/>
-              <g>
-                <line x1="14.376" y1="4.758" x2="28.71" y2="4.758" fill="none" strokeLinecap="round" strokeMiterlimit="10"/>
-                <line x1="14.376" y1="7.754" x2="32.551" y2="7.754" fill="none" strokeLinecap="round" strokeMiterlimit="10"/>
-              </g>
-              <g>
-                <line x1="14.376" y1="16.678" x2="28.71" y2="16.678" fill="none" strokeLinecap="round" strokeMiterlimit="10"/>
-                <line x1="14.376" y1="19.479" x2="32.551" y2="19.479" fill="none" strokeLinecap="round" strokeMiterlimit="10"/>
-              </g>
-            </svg>
+    <>
+      {loading === true ? (
+        <div
+          className="products-main-grid"
+          style={{
+            gap: "1rem",
+            gridTemplateColumns: showOrder === "list" && "1fr",
+          }}
+        >
+          {Array.from({ length: 8 }).map((_, index) => (
+            <ProductCardSkeleton key={index} />
+          ))}
+        </div>
+      ) : (
+        <div className="products-grid">
+          <div className="products-header-plg">
+            <div className="left-products-header-plg">
+              <div className="show-icon">
+                <button
+                  className="show-items"
+                  onClick={() => setShowOrder("grid")}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    version="1.1"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M9.5,1c.551,0,1,.449,1,1v7.5c0,.551-.449,1-1,1H2c-.551,0-1-.449-1-1V2c0-.551.449-1,1-1h7.5M9.5,0H2C.895,0,0,.895,0,2v7.5c0,1.105.895,2,2,2h7.5c1.105,0,2-.895,2-2V2c0-1.105-.895-2-2-2h0Z" />
+                    <path d="M22,1c.551,0,1,.449,1,1v7.5c0,.551-.449,1-1,1h-7.5c-.551,0-1-.449-1-1V2c0-.551.449-1,1-1h7.5M22,0h-7.5c-1.105,0-2,.895-2,2v7.5c0,1.105.895,2,2,2h7.5c1.105,0,2-.895,2-2V2c0-1.105-.895-2-2-2h0Z" />
+                    <path d="M9.5,13.5c.551,0,1,.449,1,1v7.5c0,.551-.449,1-1,1H2c-.551,0-1-.449-1-1v-7.5c0-.551.449-1,1-1h7.5M9.5,12.5H2c-1.105,0-2,.895-2,2v7.5c0,1.105.895,2,2,2h7.5c1.105,0,2-.895,2-2v-7.5c0-1.105-.895-2-2-2h0Z" />
+                    <path d="M22,13.5c.551,0,1,.449,1,1v7.5c0,.551-.449,1-1,1h-7.5c-.551,0-1-.449-1-1v-7.5c0-.551.449-1,1-1h7.5M22,12.5h-7.5c-1.105,0-2,.895-2,2v7.5c0,1.105.895,2,2,2h7.5c1.105,0,2-.895,2-2v-7.5c0-1.105-.895-2-2-2h0Z" />
+                  </svg>
+                </button>
+                <button
+                  className="show-items"
+                  onClick={() => setShowOrder("list")}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24"
+                    version="1.1"
+                    viewBox="0 0 35 24"
+                  >
+                    <path d="M6.634,1.838c2.436,0,4.418,1.982,4.418,4.418s-1.982,4.418-4.418,4.418-4.418-1.982-4.418-4.418S4.197,1.838,6.634,1.838M6.634.838C3.641.838,1.215,3.264,1.215,6.256s2.426,5.418,5.418,5.418,5.418-2.426,5.418-5.418S9.626.838,6.634.838h0Z" />
+                    <path d="M6.634,13.66c2.436,0,4.418,1.982,4.418,4.418s-1.982,4.418-4.418,4.418-4.418-1.982-4.418-4.418,1.982-4.418,4.418-4.418M6.634,12.66c-2.992,0-5.418,2.426-5.418,5.418s2.426,5.418,5.418,5.418,5.418-2.426,5.418-5.418-2.426-5.418-5.418-5.418h0Z" />
+                    <g>
+                      <line
+                        x1="14.376"
+                        y1="4.758"
+                        x2="28.71"
+                        y2="4.758"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeMiterlimit="10"
+                      />
+                      <line
+                        x1="14.376"
+                        y1="7.754"
+                        x2="32.551"
+                        y2="7.754"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeMiterlimit="10"
+                      />
+                    </g>
+                    <g>
+                      <line
+                        x1="14.376"
+                        y1="16.678"
+                        x2="28.71"
+                        y2="16.678"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeMiterlimit="10"
+                      />
+                      <line
+                        x1="14.376"
+                        y1="19.479"
+                        x2="32.551"
+                        y2="19.479"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeMiterlimit="10"
+                      />
+                    </g>
+                  </svg>
+                </button>
+              </div>
+
+              <p>
+                Showing{" "}
+                <span>
+                  1 -{" "}
+                  {products?.length > 8 ? 8 : products?.length}
+                </span>{" "}
+                of{" "}
+                {category === "" || category === null
+                  ? products?.length
+                  : products?.length}{" "}
+                results
+              </p>
+            </div>
           </div>
-
-          <p>Showing <span>1 - 16</span> of 72 results</p>
+          <div
+            className="products-main-grid"
+            style={{
+              display: products?.length === 0 && "flex",
+              alignItems: products?.length === 0 && "center",
+              justifyContent: products?.length === 0 && "center",
+              gap: "1rem",
+              gridTemplateColumns: showOrder === "list" && "1fr",
+            }}
+          >
+            {showOrder === "grid" ? (
+              products?.length > 0 ? (
+                products?.map((product) => (
+                  <Product
+                    key={product.id}
+                    imgLocation={product.pictures[0]}
+                    title={product.name}
+                    description={product.description}
+                    hasDiscount={product.discountPrice > 0}
+                    beforeDiscount={product.discountPrice}
+                    afterDiscount={product.price}
+                    isWishlist={false}
+                    price={product.price}
+                  />
+                ))
+              ) : (
+                <div
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <img
+                    src="main-images/products/no-item.gif"
+                    alt="No Products"
+                  />
+                </div>
+              )
+            ) : null}
+            {showOrder == "list" ? (
+              products?.length > 0 ? (
+                products?.map((product) => {
+                  return (
+                    <ProductListShow
+                      key={product.id}
+                      imgLocation={product.pictures[0]}
+                      title={product.name}
+                      description={product.description}
+                      hasDiscount={product.discountPrice > 0 && true}
+                      beforeDiscount={product.discountPrice}
+                      afterDiscount={product.price}
+                      isWishlist={false}
+                      price={product.price}
+                    />
+                  );
+                })
+              ) : (
+                <>
+                  <div
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <img
+                      src="main-images/products/no-item.gif"
+                      alt="No Products"
+                    />
+                  </div>
+                </>
+              )
+            ) : null}
+            {products?.length == 0 ||
+              (!products && (
+                <div
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <img src="main-images/products/no-item.gif" alt="" />
+                </div>
+              ))}
+          </div>
         </div>
-        <div className="right-products-header-plg">
-          <span>Sort by latest</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-down" viewBox="0 0 16 16">
-            <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
-          </svg>
-        </div>
-      </div>
-      <div className='products-main-grid'>
-        <Product imgLocation='main-images/banner-main-images/banner.jpg' title='New Balenciaga T-shirt' description='new T-shirt of Balenciaga' beforeDiscount={10.00} afterDiscount={5.00} />
-        <Product imgLocation='main-images/banner-main-images/banner.jpg' title='New Balenciaga T-shirt' description='new T-shirt of Balenciaga' beforeDiscount={10.00} afterDiscount={5.00} />
-        <Product imgLocation='main-images/banner-main-images/banner.jpg' title='New Balenciaga T-shirt' description='new T-shirt of Balenciaga' beforeDiscount={10.00} afterDiscount={5.00} />
-        <Product imgLocation='main-images/banner-main-images/banner.jpg' title='New Balenciaga T-shirt' description='new T-shirt of Balenciaga' beforeDiscount={10.00} afterDiscount={5.00} />
-        <Product imgLocation='main-images/banner-main-images/banner.jpg' title='New Balenciaga T-shirt' description='new T-shirt of Balenciaga' beforeDiscount={10.00} afterDiscount={5.00} />
-        <Product imgLocation='main-images/banner-main-images/banner.jpg' title='New Balenciaga T-shirt' description='new T-shirt of Balenciaga' beforeDiscount={10.00} afterDiscount={5.00} />
-        <Product imgLocation='main-images/banner-main-images/banner.jpg' title='New Balenciaga T-shirt' description='new T-shirt of Balenciaga' beforeDiscount={10.00} afterDiscount={5.00} />
-        <Product imgLocation='main-images/banner-main-images/banner.jpg' title='New Balenciaga T-shirt' description='new T-shirt of Balenciaga' beforeDiscount={10.00} afterDiscount={5.00} />
-        <Product imgLocation='main-images/banner-main-images/banner.jpg' title='New Balenciaga T-shirt' description='new T-shirt of Balenciaga' beforeDiscount={10.00} afterDiscount={5.00} />
-        <Product imgLocation='main-images/banner-main-images/banner.jpg' title='New Balenciaga T-shirt' description='new T-shirt of Balenciaga' beforeDiscount={10.00} afterDiscount={5.00} />
-        <Product imgLocation='main-images/banner-main-images/banner.jpg' title='New Balenciaga T-shirt' description='new T-shirt of Balenciaga' beforeDiscount={10.00} afterDiscount={5.00} />
-        <Product imgLocation='main-images/banner-main-images/banner.jpg' title='New Balenciaga T-shirt' description='new T-shirt of Balenciaga' beforeDiscount={10.00} afterDiscount={5.00} />
-      </div>
-    </div>
-  )
+      )}
+    </>
+  );
 }
-/*
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" version="1.1" viewBox="0 0 24 24">
-    <path d="M9.5,1c.551,0,1,.449,1,1v7.5c0,.551-.449,1-1,1H2c-.551,0-1-.449-1-1V2c0-.551.449-1,1-1h7.5M9.5,0H2C.895,0,0,.895,0,2v7.5c0,1.105.895,2,2,2h7.5c1.105,0,2-.895,2-2V2c0-1.105-.895-2-2-2h0Z"/>
-    <path d="M22,1c.551,0,1,.449,1,1v7.5c0,.551-.449,1-1,1h-7.5c-.551,0-1-.449-1-1V2c0-.551.449-1,1-1h7.5M22,0h-7.5c-1.105,0-2,.895-2,2v7.5c0,1.105.895,2,2,2h7.5c1.105,0,2-.895,2-2V2c0-1.105-.895-2-2-2h0Z"/>
-    <path d="M9.5,13.5c.551,0,1,.449,1,1v7.5c0,.551-.449,1-1,1H2c-.551,0-1-.449-1-1v-7.5c0-.551.449-1,1-1h7.5M9.5,12.5H2c-1.105,0-2,.895-2,2v7.5c0,1.105.895,2,2,2h7.5c1.105,0,2-.895,2-2v-7.5c0-1.105-.895-2-2-2h0Z"/>
-    <path d="M22,13.5c.551,0,1,.449,1,1v7.5c0,.551-.449,1-1,1h-7.5c-.551,0-1-.449-1-1v-7.5c0-.551.449-1,1-1h7.5M22,12.5h-7.5c-1.105,0-2,.895-2,2v7.5c0,1.105.895,2,2,2h7.5c1.105,0,2-.895,2-2v-7.5c0-1.105-.895-2-2-2h0Z"/>
-  </svg>
-
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" version="1.1" viewBox="0 0 35 24">
-    <path d="M6.634,1.838c2.436,0,4.418,1.982,4.418,4.418s-1.982,4.418-4.418,4.418-4.418-1.982-4.418-4.418S4.197,1.838,6.634,1.838M6.634.838C3.641.838,1.215,3.264,1.215,6.256s2.426,5.418,5.418,5.418,5.418-2.426,5.418-5.418S9.626.838,6.634.838h0Z"/>
-    <path d="M6.634,13.66c2.436,0,4.418,1.982,4.418,4.418s-1.982,4.418-4.418,4.418-4.418-1.982-4.418-4.418,1.982-4.418,4.418-4.418M6.634,12.66c-2.992,0-5.418,2.426-5.418,5.418s2.426,5.418,5.418,5.418,5.418-2.426,5.418-5.418-2.426-5.418-5.418-5.418h0Z"/>
-    <g>
-      <line x1="14.376" y1="4.758" x2="28.71" y2="4.758" fill="none" stroke-linecap="round" stroke-miterlimit="10"/>
-      <line x1="14.376" y1="7.754" x2="32.551" y2="7.754" fill="none" stroke-linecap="round" stroke-miterlimit="10"/>
-    </g>
-    <g>
-      <line x1="14.376" y1="16.678" x2="28.71" y2="16.678" fill="none" stroke-linecap="round" stroke-miterlimit="10"/>
-      <line x1="14.376" y1="19.479" x2="32.551" y2="19.479" fill="none" stroke-linecap="round" stroke-miterlimit="10"/>
-    </g>
-  </svg>
-*/

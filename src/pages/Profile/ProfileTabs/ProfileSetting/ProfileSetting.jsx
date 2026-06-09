@@ -8,7 +8,6 @@ import './ProfileSetting.css';
 export default function ProfileSetting() {
   return (
     <div className="profile-page">
-      <Header />
       <div className='profile-main-page'>
         <div className="profile-section">
           <ProfileHeader />

@@ -7,7 +7,6 @@ import './ProfileNotifications.css';
 export default function ProfileNotifications() {
   return (
     <div className="profile-page">
-      <Header />
       <div className='profile-main-page'>
         <div className="profile-section">
           <ProfileHeader />

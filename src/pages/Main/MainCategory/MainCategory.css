@@ -6,6 +6,7 @@
 
 .swiper-slide {
   height: auto;
+  padding: 0 !important;
 }
 
 /* handle Main Category Styles */
@@ -36,6 +37,16 @@
   font-weight: 600;
   max-lines: 1;
   text-wrap: nowrap;
+}
+
+@media (max-width: 600px) {
+  .title-category > h1 {
+    font-size: 1.5rem;
+  }
+
+  .category-header {
+    padding-inline: 1.5rem;
+  }
 }
 
 .change-category {

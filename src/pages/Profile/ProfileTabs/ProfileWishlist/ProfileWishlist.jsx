@@ -8,7 +8,6 @@ import './ProfileWishlist.css';
 export default function ProfileWishlist() {
   return (
     <div className="profile-page">
-      <Header />
       <div className='profile-main-page'>
         <div className="profile-section">
           <ProfileHeader />

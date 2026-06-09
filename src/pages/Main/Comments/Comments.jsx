@@ -1,9 +1,11 @@
 /* eslint-disable react-hooks/refs */
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import "./Comments.css";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
+import GlobalContext from "../../../context/Context";
+import TestimonialSkeleton from "../../../components/loadingComponents/TestimonialSkeleton";
 
 export default function Comments() {
   const prevRef = useRef(null);
@@ -179,6 +181,8 @@ export default function Comments() {
     },
   ]);
 
+  const { loading } = useContext(GlobalContext);
+
   return (
     <div className="comments-main-container">
       <div className="comments-header">
@@ -218,6 +222,7 @@ export default function Comments() {
           </button>
         </div>
       </div>
+
       <Swiper
         modules={[Navigation]}
         spaceBetween={0}
@@ -245,35 +250,41 @@ export default function Comments() {
           },
         }}
       >
-        {items.map((item) => {
-          return (
-            <SwiperSlide style={{padding: 35}} key={item.id}>
-              <div key={item.id} className="card-container-comments">
-                <div className="top-stars">
-                  <img
-                    src={`main-images/stars/${item.stars}.svg`}
-                    alt="stars"
-                  />
-                </div>
-                <div className="middle-content-comment">
-                  <p>{item.comment}</p>
-                </div>
-                <div className="profile-comments">
-                  <div className="profile-image">
-                    <img
-                      src="main-images/banner-main-images/banner.jpg"
-                      alt="profile"
-                    />
+        {loading
+          ? Array.from({ length: 4 }).map((_, index) => (
+              <SwiperSlide key={index}>
+                <TestimonialSkeleton />
+              </SwiperSlide>
+            ))
+          : items.map((item) => {
+              return (
+                <SwiperSlide style={{ padding: 35 }} key={item.id}>
+                  <div key={item.id} className="card-container-comments">
+                    <div className="top-stars">
+                      <img
+                        src={`main-images/stars/${item.stars}.svg`}
+                        alt="stars"
+                      />
+                    </div>
+                    <div className="middle-content-comment">
+                      <p>{item.comment}</p>
+                    </div>
+                    <div className="profile-comments">
+                      <div className="profile-image">
+                        <img
+                          src="main-images/banner-main-images/banner.jpg"
+                          alt="profile"
+                        />
+                      </div>
+                      <div className="contact-info">
+                        <h2>{item.firstname + " " + item.lastname}</h2>
+                        <h3>{item.userType}</h3>
+                      </div>
+                    </div>
                   </div>
-                  <div className="contact-info">
-                    <h2>{item.firstname + " " + item.lastname}</h2>
-                    <h3>{item.userType}</h3>
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-          );
-        })}
+                </SwiperSlide>
+              );
+            })}
       </Swiper>
     </div>
   );

@@ -8,7 +8,6 @@ import './ProfileOrder.css';
 export default function ProfileOrder() {
   return (
     <div className="profile-page">
-      <Header />
       <div className='profile-main-page'>
         <div className="profile-section">
           <ProfileHeader filterShow={true} />

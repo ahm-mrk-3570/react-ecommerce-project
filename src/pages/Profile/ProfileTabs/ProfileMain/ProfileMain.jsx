@@ -9,7 +9,6 @@ export default function ProfileMain() {
   return (
     <>
       <div className="profile-page">
-        <Header />
         <div className='profile-main-page'>
           <div className="profile-section">
             <ProfileHeader filterShow={false} />

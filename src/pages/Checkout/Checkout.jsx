@@ -38,7 +38,6 @@ export default function Checkout() {
     <>
       <title>Checkout</title>
       <div ref={checkoutPage} className='checkout-page'>
-        <Header />
         <div className="main-checkout">
           <div className="checkout-sections">
             <ShippingAddress shipping={shipping} handleStep={handleStep} />

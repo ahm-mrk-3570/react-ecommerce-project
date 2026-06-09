@@ -44,7 +44,7 @@ export default function DriverMenu() {
           </button>
           <div className='logo-section'>
             <Link to='/'>
-              <img src='/logo.svg' />
+              <img src={`${import.meta.env.BASE_URL}/logo.svg`} />
               <h1 style={{color: 'black'}}>Crimba</h1>
             </Link>
           </div>

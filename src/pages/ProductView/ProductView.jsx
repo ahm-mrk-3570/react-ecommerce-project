@@ -12,7 +12,6 @@ export default function ProductView() {
   return (
     <>
     <title>Product</title>
-      <Header />
       <div className='main-products-page'>
         <AddressBar address='Home > Shop > Product1' />
         <div className="bottom-main-product">
