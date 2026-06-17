@@ -73,12 +73,13 @@
   justify-content: start;
 }
 
-.submit-review > button {
+.submit-review > input {
   padding: 1rem 3rem;
   background-color: var(--bg-secondary-color);
   color: var(--text-secondary-color);
   border: none;
   border-radius: 0.75rem;
+  cursor: pointer;
 }
 
 @media (max-width : 299px) {

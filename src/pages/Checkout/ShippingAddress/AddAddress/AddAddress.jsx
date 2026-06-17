@@ -1,44 +1,188 @@
-import './AddAddress.css';
+import { useContext, useState } from "react";
+import "./AddAddress.css";
+import {
+  addAddress,
+  setDefaultAddress,
+} from "../../../../services/addressServices";
+import { toast } from "react-toastify";
+import GlobalContext from "../../../../context/Context";
+import AuthContext from "../../../../context/AuthContext";
 
-export default function AddAddress({ handleStep }) {
+export default function AddAddress() {
+  const [form, setForm] = useState({
+    full_name: "",
+    address: "",
+    city: "",
+    state: "",
+    country: "",
+    postal_code: "",
+    is_default: false,
+  });
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const required = ["full_name", "address", "city", "state", "country"];
+
+    const next = {};
+
+    required.forEach((item) => {
+      if (!form[item].trim()) next[item] = "This Field is required";
+    });
+
+    return next;
+  };
+
+  const { setAddresses } = useContext(GlobalContext);
+  const { user } = useContext(AuthContext);
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async () => {
+    const errs = validate();
+    if (Object.keys(errs).length) {
+      setErrors(errs);
+      return;
+    }
+
+    const { data, error } = await addAddress({ ...form, user_id: user.id });
+    if (form.is_default === true) {
+      const { error } = await setDefaultAddress(data.id, user.id);
+      if (error) {
+        toast.error("Failed to set default");
+        return;
+      }
+      setAddresses((prev) =>
+        prev.map((a) => ({ ...a, is_default: a.id === data.id })),
+      );
+      toast.success("Default address updated");
+    }
+    if (error) {
+      toast.error("Failed to add address");
+      return;
+    }
+    setAddresses((prev) => [...prev, data]);
+    toast.success("Address added");
+    setForm({
+      full_name: "",
+      address: "",
+      city: "",
+      state: "",
+      country: "",
+      postal_code: "",
+      is_default: false,
+    });
+  };
+
   return (
     <div className="add-address">
       <h2>Add a new Address</h2>
-      <div className="name-address">
-        <label htmlFor="name-address">Name</label>
-        <input type="text" id='name-address' />
+      <div className="full_name">
+        <label htmlFor="full_name">
+          Full Name <span className="ap-required">*</span>
+        </label>
+        <input
+          type="text"
+          name="full_name"
+          id="full_name"
+          onChange={handleChange}
+          value={form.full_name}
+        />
+        {errors["full_name"] && (
+          <span className="ap-error-msg">{errors["full_name"]}</span>
+        )}
       </div>
-      <div className="mobile-number-address">
-        <label htmlFor="mobile-number-address">Mobile Number</label>
-        <input type="text" id='mobile-number-address' />
+      <div className="address">
+        <label htmlFor="address">
+          Address <span className="ap-required">*</span>
+        </label>
+        <input
+          type="text"
+          name="address"
+          id="address"
+          onChange={handleChange}
+          value={form.address}
+        />
+        {errors["address"] && (
+          <span className="ap-error-msg">{errors["address"]}</span>
+        )}
       </div>
-      <div className="house-address">
-        <label htmlFor="house-address">Flat, House no., Building, Company, Apartment</label>
-        <input type="text" id='house-address' />
+      <div className="city">
+        <label htmlFor="city">
+          City <span className="ap-required">*</span>
+        </label>
+        <input
+          type="text"
+          id="city"
+          name="city"
+          onChange={handleChange}
+          value={form.city}
+        />
+        {errors["city"] && (
+          <span className="ap-error-msg">{errors["city"]}</span>
+        )}
       </div>
-      <div className="area-address">
-        <label htmlFor="area-address">Area, Colony, Street, Sector, Village</label>
-        <input type="text" id='area-address' />
+      <div className="state">
+        <label htmlFor="state">
+          State <span className="ap-required">*</span>
+        </label>
+        <input
+          type="text"
+          id="state"
+          name="state"
+          onChange={handleChange}
+          value={form.state}
+        />
+        {errors["state"] && (
+          <span className="ap-error-msg">{errors["state"]}</span>
+        )}
       </div>
-      <div className="city-address">
-        <label htmlFor="city-address">City</label>
-        <select id="city-address">
-          <option value="New York">New York</option>
-          <option value="Chicago">Chicago</option>
-          <option value="Los Angless">Los Angless</option>
-        </select>
+      <div className="country">
+        <label htmlFor="country">
+          Country <span className="ap-required">*</span>
+        </label>
+        <input
+          type="text"
+          id="country"
+          name="country"
+          onChange={handleChange}
+          value={form.country}
+        />
+        {errors["country"] && (
+          <span className="ap-error-msg">{errors["country"]}</span>
+        )}
       </div>
-      <div className="pin-code-address">
-        <label htmlFor="pin-code-address">Pin Code</label>
-        <input type="text" id='pin-code-address' />
+      <div className="postal_code">
+        <label htmlFor="postal_code">Postal Code</label>
+        <input
+          type="text"
+          id="postal_code"
+          name="postal_code"
+          onChange={handleChange}
+          value={form.postal_code}
+        />
       </div>
       <div className="use-default-address">
-        <input type="checkbox" id='use-default-address' />
+        <input
+          type="checkbox"
+          id="use-default-address"
+          name="is_default"
+          checked={form.is_default}
+          onChange={(e) =>
+            e.target.checked
+              ? setForm({ ...form, is_default: true })
+              : setForm({ ...form, is_default: false })
+          }
+        />
         <label htmlFor="use-default-address">Use as my default address</label>
       </div>
-      <button className="add-new-address" onClick={() => handleStep('home')}>
+      <button className="add-new-address" onClick={() => handleSubmit()}>
         Add New Address
       </button>
     </div>
-  )
+  );
 }

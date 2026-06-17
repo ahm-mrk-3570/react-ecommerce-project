@@ -8,7 +8,7 @@ export default function Cart() {
   return (
     <div className='checkout-page'>
       <div className="checkout-conent">
-        <h2>Checkout</h2>
+        <h1>Cart</h1>
         <div className="checkout-section">
           <OrderSummery />
           <PaymentSummery buttonText="Go to checkout" />

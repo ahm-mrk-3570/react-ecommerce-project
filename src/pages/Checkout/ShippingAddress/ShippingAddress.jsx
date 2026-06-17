@@ -1,12 +1,65 @@
-import RoadCheckout from '../RoadCheckout/RoadCheckout';
-import PastAddress from './PastAddress/PastAddress';
-import AddAddress from './AddAddress/AddAddress';
-import './ShippingAddress.css';
-import NoneAddress from './NoneAddress/NoneAddress';
+/* eslint-disable react-hooks/refs */
+import RoadCheckout from "../RoadCheckout/RoadCheckout";
+import PastAddress from "./PastAddress/PastAddress";
+import AddAddress from "./AddAddress/AddAddress";
+import "./ShippingAddress.css";
+import NoneAddress from "./NoneAddress/NoneAddress";
+import { useContext, useEffect, useRef, useState } from "react";
+import GlobalContext from "../../../context/Context";
+import CheckoutContext from "../../../context/CheckoutContext";
+import { createPortal } from "react-dom";
+import { toast } from "react-toastify";
+import { addAddress, updateAddress } from "../../../services/addressServices";
+import AddressPortal from "../../Profile/ProfileTabs/ProfileAddresses/AddressPortal/AddressPortal";
 
-export default function ShippingAddress({ shipping, handleStep }) {
+export default function ShippingAddress({ step, setStep }) {
+  const [addressId, setAddressId] = useState(null);
+  const [openPortal, setOpenPortal] = useState(false);
+  const [editAddress, setEditAddress] = useState(null);
+
+  const { addresses, setAddresses } = useContext(GlobalContext);
+  const { setCheckoutData } = useContext(CheckoutContext);
+
+  const portalEl = useRef(document.querySelector(".portal-address-view"));
+  useEffect(() => {
+    if (!portalEl.current) return;
+    portalEl.current.style.display = openPortal ? "flex" : "none";
+    document.body.style.overflow = openPortal ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [openPortal]);
+
+  const handleOpenEdit = (address) => {
+    setEditAddress(address);
+    setOpenPortal(true);
+  };
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) handleClose();
+  };
+
+  const handleClose = () => {
+    setOpenPortal(false);
+    setEditAddress(null);
+  };
+
+  const handleSubmit = async (form, id) => {
+    const { error } = await updateAddress(id, form);
+    if (error) {
+      toast.error("Failed to update address");
+      return;
+    }
+    setAddresses((prev) =>
+      prev.map((a) => (a.id === id ? { ...a, ...form } : a)),
+    );
+    toast.success("Address updated");
+  };
+
   return (
-    <div ref={shipping} className='shipping-address'>
+    <div
+      style={{ display: step === 1 ? "flex" : "none" }}
+      className="shipping-address"
+    >
       <h1>Shipping Address</h1>
       <div className="shipping-main">
         <RoadCheckout step="home" />
@@ -14,19 +67,54 @@ export default function ShippingAddress({ shipping, handleStep }) {
           <div className="description-checkout">
             <h2>Select a delivery address</h2>
             <p>
-              Is the address you'd like to use displayed below? If so, click the corresponding "Deliver to this address" button. Or you can enter a new delivery address.
+              Is the address you'd like to use displayed below? If so, click the
+              corresponding "Deliver to this address" button. Or you can enter a
+              new delivery address.
             </p>
           </div>
           <div className="past-address-contaoiner">
-            <PastAddress />
-            <PastAddress />
-            <PastAddress />
-            <NoneAddress />
+            {addresses &&
+              addresses.map((address, i) => {
+                return (
+                  <PastAddress
+                    address={address}
+                    key={i}
+                    addressId={addressId}
+                    setAddressId={setAddressId}
+                    onEdit={handleOpenEdit}
+                  />
+                );
+              })}
+            <NoneAddress addressId={addressId} setAddressId={setAddressId} />
           </div>
-          <button className='deliver-here' onClick={() => handleStep('home')}>Deliver Here</button>
+          <button
+            className="deliver-here"
+            onClick={() => {
+              if (addressId !== "" && addressId !== null) {
+                setCheckoutData((prev) => ({ ...prev, addressId }));
+                setStep(2);
+              } else {
+                toast.error("Please Select an address")
+              }
+            }}
+          >
+            Deliver Here
+          </button>
         </div>
-        <AddAddress handleStep={handleStep} />
+        {addressId === "" ? <AddAddress /> : null}
       </div>
+      {createPortal(
+        openPortal ? (
+          <div className="portal-overlay" onClick={handleOverlayClick}>
+            <AddressPortal
+              onClose={handleClose}
+              onSubmit={handleSubmit}
+              editAddress={editAddress}
+            />
+          </div>
+        ) : null,
+        portalEl.current,
+      )}
     </div>
-  )
+  );
 }

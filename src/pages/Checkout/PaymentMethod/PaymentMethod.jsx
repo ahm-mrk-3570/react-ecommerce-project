@@ -2,14 +2,12 @@ import RoadCheckout from '../RoadCheckout/RoadCheckout';
 import './PaymentMethod.css';
 import PaymentMethods from './PaymentMethods/PaymentMethods';
 
-export default function PaymentMethod({ payment, handleStep }) {
+export default function PaymentMethod({ step, setStep }) {
+
   return (
-    <div ref={payment} className='payment-method'>
+    <div style={{display: step === 2 ? "flex" : "none"}} className='payment-method'>
       <RoadCheckout step='card' />
-      <PaymentMethods />
-      <div className="add-card proccessed" onClick={() => handleStep('payment')}>
-        Continue
-      </div>
+      <PaymentMethods setStep={setStep} />
     </div>
   )
 }

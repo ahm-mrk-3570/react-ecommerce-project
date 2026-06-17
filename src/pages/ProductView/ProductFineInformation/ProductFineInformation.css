@@ -23,17 +23,36 @@
   gap: 3rem;
   font-weight: bold;
   font-size: x-large;
-  border-bottom: 2px solid #eee;
   overflow: auto;
 }
 
 .header-product-fine-info > div {
   padding: 1rem 0;
   cursor: pointer;
+  position: relative;
 }
 
-.header-product-fine-info > div:first-child {
-  border-bottom: 2px solid var(--border-color);
+.header-product-fine-info > div::before {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  background-color: var(--text-color);
+  animation: widthOpen 0.5s ease-in forwards;
+}
+
+.section-active::before {
+  content: "";
+}
+
+@keyframes widthOpen {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
 }
 
 .container-product-fine-info {

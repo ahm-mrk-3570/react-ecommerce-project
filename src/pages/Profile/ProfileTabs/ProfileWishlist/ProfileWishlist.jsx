@@ -1,29 +1,28 @@
-import Footer from '../../../../components/Footer/Footer';
-import Header from '../../../../components/Header/Header';
-import Product from '../../../../components/Product/Product';
-import MenuProfile from '../../MenuProfile/MenuProfile';
-import ProfileHeader from '../../ProfileHeader/ProfileHeader';
-import './ProfileWishlist.css';
+import { useContext } from "react";
+import "./ProfileWishlist.css";
+import AuthContext from "../../../../context/AuthContext";
+import Product from "../../../../components/Product/Product";
+import WishlistsProduct from "../../../../components/WishlistsProduct/WishlistsProduct";
+import GlobalContext from "../../../../context/Context";
 
 export default function ProfileWishlist() {
+
+  const { wishlists, setWishlists } = useContext(GlobalContext);
+
   return (
-    <div className="profile-page">
-      <div className='profile-main-page'>
-        <div className="profile-section">
-          <ProfileHeader />
-          <div className="main-profile">
-            <MenuProfile />
-            <div className="grid-wishlist">
-              <Product isWishlist={true} imgLocation="/main-images/products/01.png" title="Printed Dress" description="Printed" beforeDiscount={80} afterDiscount={50} />
-              <Product isWishlist={true} imgLocation="/main-images/products/01.png" title="Printed Dress" description="Printed" beforeDiscount={80} afterDiscount={50} />
-              <Product isWishlist={true} imgLocation="/main-images/products/01.png" title="Printed Dress" description="Printed" beforeDiscount={80} afterDiscount={50} />
-              <Product isWishlist={true} imgLocation="/main-images/products/01.png" title="Printed Dress" description="Printed" beforeDiscount={80} afterDiscount={50} />
-              <Product isWishlist={true} imgLocation="/main-images/products/01.png" title="Printed Dress" description="Printed" beforeDiscount={80} afterDiscount={50} />
-            </div>
-          </div>
-        </div>
-      </div>
-      <Footer />
+    <div className="grid-wishlist">
+      {wishlists && wishlists.map((w) => (
+        <WishlistsProduct
+          id={w.id}
+          productId={w.products.id}
+          key={w.products.id}
+          imgLocation={w.products.pictures[0]}
+          title={w.products.name}
+          isWishlist={true}
+          description={w.products.description}
+          setWishlists={setWishlists}
+        />
+      ))}
     </div>
-  )
+  );
 }

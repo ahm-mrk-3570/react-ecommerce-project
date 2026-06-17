@@ -1,34 +1,122 @@
-import './OrderShow.css';
+/* eslint-disable react-hooks/set-state-in-effect */
+import { useContext, useEffect, useState } from "react";
+import "./OrderShow.css";
+import dayjs from "dayjs";
+import ProfileContext from "../../../../../../context/ProfileContext";
 
-export default function OrderShow({ isDelivered }) {
+const STATUS_STYLES = {
+  Delivered: { bg: "rgba(16,185,129,0.12)", color: "#10b981" },
+  Processing: { bg: "rgba(251,191,36,0.12)", color: "#fbbf24" },
+  Shipped: { bg: "rgba(99,102,241,0.14)", color: "#818cf8" },
+  Cancelled: { bg: "rgba(239,68,68,0.12)", color: "#ef4444" },
+};
+
+export default function OrderShow({ order }) {
+  const [paymentStatus, setPaymentStatus] = useState(null);
+  const [isShow, setIsShow] = useState(false);
+
+  const statusStyle = STATUS_STYLES[order?.status] || STATUS_STYLES.Processing;
+  const orderId = order?.id.split('').slice(0, 13).join("");
+
+  const { handleOpen } = useContext(ProfileContext);
+
+  useEffect(() => {
+    switch (order.status) {
+      case "Pending":
+      case "Progressing":
+        setPaymentStatus(["View", "Cancel"]);
+        break;
+      case "Shipped":
+        setPaymentStatus(["View", "Track"]);
+        break;
+
+      case "Delivered":
+        setPaymentStatus(["View", "Review"]);
+        break;
+
+      case "Cancelled":
+        setPaymentStatus(["View", "Buy Again"]);
+        break;
+
+      case "Refunded":
+        setPaymentStatus(["View"]);
+        break;
+    }
+  }, [order]);
+
   return (
-    <div className='order-show-profile'>
-      <div className="top-order-show">
-        <div className="top-l-order-show">
-          <div className="img-order-show-container">
-            <img src="/main-images/products/01.png" height={80} alt="order-product0" />
-          </div>
-          <div className="order-show-detail">
-            <h2>Girls Pink Moana Printed Dress</h2>
-            <span>Size: <span>S</span></span>
-            <span>Quantity: <span>1</span></span>
-          </div>
+    <div className="order-show-profile" style={{ height: isShow === true ? "auto" : "100px"}}>
+      <div className="order-show-header" onClick={() => setIsShow(!isShow)}
+        style={{
+          borderBottom: isShow && "1px solid var(--bg-secondary-color)",
+        }}
+      >
+        <div className="order-show-detail">
+          <p>
+            <span style={{ color: "#f59e0b" }}>Order Id:</span> {orderId}...
+          </p>
+          <p>
+            {dayjs(order.created_at).format("DD MMM YYYY")} •{" "}
+            {order.order_items.length} Products • ${order.total_price}
+          </p>
         </div>
-        <div className="top-r-order-show">
-          <button>View Order</button>
-          <button style={{
-            backgroundColor : isDelivered ? 'var(--bg-secondary-color)' : 'red',
-            color : isDelivered ? 'var(--text-secondary-color)' : 'white',
-          }}>{isDelivered ? 'Write A Review' : 'Cancel Order'}</button>
-        </div>
+        <span
+          className="ov-status-badge"
+          style={{ background: statusStyle.bg, color: statusStyle.color, alignSelf: "top" }}
+        >
+          <span
+            className="ov-status-dot"
+            style={{ background: statusStyle.color }}
+          />
+          {order?.status}
+        </span>
       </div>
-      <div className="bottom-order-show">
-        <span style={{
-          backgroundColor : isDelivered ? '#e2ffb4' : '#fff59a',
-          color : isDelivered ? '#00bb00' : '#d3be00',
-        }}>{isDelivered ? 'Delivered' : 'In Process'}</span>
-        <span>Your Product has been {isDelivered ? 'delivered' : 'Inprocess'}</span>
+      <div className="order-show-body">
+        <ul className="image-slider-gallery">
+          {order.order_items &&
+            order.order_items.slice(0, 3).map((p, i) => {
+              return (
+                <div key={i} className="order-item-container">
+                  <img src={p.product_image} alt="Product" />
+                  <p>{p.product_name}</p>
+                </div>
+              );
+            })}
+
+          {order.order_items && order.order_items.length > 3 && (
+            <li className="more-gallery-images">
+              +{order.order_items.length - 3}
+            </li>
+          )}
+        </ul>
+      </div>
+      <div className="order-show-footer">
+        {order.status === "Delivered" && (
+          <div className="shipping-address">
+            <p>Shipping Address</p>
+            <p>{`${order.shipping_city}, ${order.shipping_country}`}</p>
+          </div>
+        )}
+        <div className="buttons-order-control-container">
+          {paymentStatus?.map((p, i) => (
+            <button
+              style={{
+                backgroundColor: p === "View" && "#f59e0b",
+                color: p === "View" && "#1a1a1a",
+                border: p === "View" && "none"
+              }}
+              key={i}
+              className="button-order-control"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (p === "View") handleOpen(order.id);
+              }}
+            >
+              {p}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
-  )
+  );
 }

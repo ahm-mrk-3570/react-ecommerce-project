@@ -16,7 +16,7 @@ export default function ProductsGrid() {
   /* State */
 
   /* Context */
-  const { products, setProducts, loading, setLoading, page } = useContext(GlobalContext);
+  const { products, setProducts, loading, setLoading, page, wishlists } = useContext(GlobalContext);
   /* Context */
 
   /* SearchParams */
@@ -164,13 +164,14 @@ export default function ProductsGrid() {
                 products?.map((product) => (
                   <Product
                     key={product.id}
+                    id={product.id}
                     imgLocation={product.pictures[0]}
                     title={product.name}
                     description={product.description}
-                    hasDiscount={product.discountPrice > 0}
-                    beforeDiscount={product.discountPrice}
+                    hasDiscount={product.discountprice > 0}
+                    beforeDiscount={product.discountprice}
                     afterDiscount={product.price}
-                    isWishlist={false}
+                    isWishlist={wishlists?.some(w => w.product_id === product.id)}
                     price={product.price}
                   />
                 ))
@@ -201,7 +202,7 @@ export default function ProductsGrid() {
                       hasDiscount={product.discountPrice > 0 && true}
                       beforeDiscount={product.discountPrice}
                       afterDiscount={product.price}
-                      isWishlist={false}
+                      isWishlist={wishlists?.some(w => w.product_id === product.id)}
                       price={product.price}
                     />
                   );

@@ -71,7 +71,11 @@
   flex-direction: column;
   align-items: start;
   justify-content: start;
-  gap: 1rem;
+  gap: 0.25rem;
+}
+
+.middle-field-container > input {
+  margin-bottom: 0.75rem;
 }
 
 .middle-input-field {
@@ -83,11 +87,11 @@
   gap: 0.2rem;
 }
 
-.middle-input-field > label {
+.middle-field-container > label {
   font-size: small;
 }
 
-.middle-input-field > input {
+.middle-field-container > input {
   width: 100%;
   padding: 0.75rem 1rem;
   outline: none;
@@ -109,6 +113,10 @@
   font-weight: bold;
 }
 
+.error-check {
+  outline: 1px solid red;
+}
+
 /* bottom styles */
 .bottom-field-container {
   width: 75% !important;
@@ -127,6 +135,8 @@
   border: 1px solid var(--border-color);
   color: var(--text-secondary-color);
   border-radius: 0.75rem;
+  margin-top: 0.75rem;
+  cursor: pointer;
 }
 
 

@@ -1,0 +1,29 @@
+.container-custom {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+
+@media (min-width: 768px) {
+  .container-custom {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-custom {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container-custom {
+    max-width: 1200px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container-custom {
+    max-width: 1440px;
+  }
+}

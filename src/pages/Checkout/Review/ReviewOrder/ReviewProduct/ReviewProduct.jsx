@@ -1,18 +1,32 @@
-import './ReviewProduct.css';
+import "./ReviewProduct.css";
 
-export default function ReviewProduct() {
+export default function ReviewProduct({ item }) {
   return (
-    <div className='review-product'>
+    <div className="review-product">
       <div className="image-review-product">
-        <img src="main-images/products/01.png" alt="product order" />
+        <img src={item.products.pictures[0] || ""} alt="product order" />
       </div>
       <div className="detail-review-product">
-        <h3>Girls Pink Moana Printed Dress</h3>
+        <h3>{item.products.name}</h3>
         <div>
-          <p>$80</p>
-          <p>Size: M</p>
+          <p>
+            <span
+              style={{
+                fontSize: "large",
+              }}
+            >
+              {item.products.discountprice > 0 &&
+                `$${item.products.discountprice}`}
+            </span>
+            {"  "}
+            <span style={{
+              opacity: item.products.discountprice > 0 && "0.7",
+              textDecoration : item.products.discountprice > 0 && "line-through"
+            }}>{`$${item.products.price}`}</span>
+          </p>
+          <p>Quantity: {item.quantity}</p>
         </div>
       </div>
     </div>
-  )
+  );
 }

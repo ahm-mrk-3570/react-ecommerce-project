@@ -1,20 +1,25 @@
 import { NavLink } from "react-router-dom";
 import "./MenuProfile.css";
+import { useContext } from "react";
+import AuthContext from "../../../context/AuthContext";
 
 export default function MenuProfile() {
+
+  const { profile } = useContext(AuthContext);
+
   return (
     <div className="menu-profile">
       <div className="profile-viewer">
         <div className="img-profile">
           <img
-            src="/main-images/products/01.png"
+            src={profile?.avatar}
             height={80}
             alt="profile pic"
           />
         </div>
         <div className="profile-name">
           <span>Hello 👋</span>
-          <span>AHMMRK</span>
+          <span>{profile?.first_name + profile?.last_name || ""}</span>
         </div>
       </div>
       <ul className="list-profile-tabs">

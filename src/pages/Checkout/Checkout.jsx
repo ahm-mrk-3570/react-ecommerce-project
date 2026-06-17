@@ -5,49 +5,27 @@ import PaymentSummery from '../Cart/PaymentSummery/PaymentSummery';
 import ShippingAddress from './ShippingAddress/ShippingAddress';
 import PaymentMethod from './PaymentMethod/PaymentMethod'
 import Review from './Review/Review';
-import { useRef } from 'react';
+import { useState } from 'react';
 import OrderConfirmed from './OrderConfirmed/OrderConfirmed';
 
 export default function Checkout() {
-  const shipping = useRef();
-  const payment = useRef();
-  const review = useRef();
-  const orderConfirmedRef = useRef();
-  const checkoutPage = useRef();
-
-  const handleStep = start => {
-    if(start.toLowerCase().trim() === "home") {
-      shipping.current.style.display = "none";
-      payment.current.style.display = "flex";
-    } else if(start.toLowerCase().trim() === "payment") {
-      payment.current.style.display = "none";
-      review.current.style.display = "flex";
-    } else {
-      console.log('Something went wrong....');
-    }
-  }
-
-  const confirmOrder = () => {
-    //...before tests
-    orderConfirmedRef.current.style.display = "flex";
-    checkoutPage.current.style.overflow = "hidden";
-    checkoutPage.current.style.height = "100vh";
-  }
+  const [step, setStep] = useState(1);
+  const [showConfirmed, setShowConfirmed] = useState(false);
   
   return (
     <>
       <title>Checkout</title>
-      <div ref={checkoutPage} className='checkout-page'>
+      <div className='checkout-page'>
         <div className="main-checkout">
           <div className="checkout-sections">
-            <ShippingAddress shipping={shipping} handleStep={handleStep} />
-            <PaymentMethod payment={payment} handleStep={handleStep} />
-            <Review review={review} />
+            <ShippingAddress step={step} setStep={setStep} />
+            <PaymentMethod step={step} setStep={setStep} />
+            <Review step={step} setStep={setStep} />
           </div>
-          <PaymentSummery buttonText="Place Order" handleButton={confirmOrder} />
+          <PaymentSummery step={step} buttonText="Place Order" setShowConfirmed={setShowConfirmed} />
         </div>
         <Footer />
-        <OrderConfirmed orderConfirmedRef={orderConfirmedRef} />
+        <OrderConfirmed showConfirmed={showConfirmed} />
       </div>
     </>
   )

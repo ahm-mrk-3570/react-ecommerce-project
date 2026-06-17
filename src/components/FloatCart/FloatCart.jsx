@@ -1,36 +1,46 @@
-import { useRef } from 'react';
-import './FloatCart.css';
-import CartFloatItem from './component/CartFloatItem';
-import { Link } from 'react-router-dom';
+import { useContext } from "react";
+import "./FloatCart.css";
+import CartFloatItem from "./component/CartFloatItem";
+import { Link, useNavigate } from "react-router-dom";
+
+import GlobalContext from "../../context/Context";
 
 export default function FloatCart({ floatCartRef }) {
-  const cartQuantity = useRef(null);
-  
+  const navigate = useNavigate();
+
+  const { cartItems, totalPriceDiscount } = useContext(GlobalContext);
+
   return (
-    <div ref={floatCartRef} className='float-cart'>
-      <span>You have <span ref={cartQuantity}>3</span> {cartQuantity.current === 1 ? "item" : "items"} in your cart</span>
-      <ul className='cart-items-float'>
-        <CartFloatItem />
-        <CartFloatItem />
-        <CartFloatItem />
-        <CartFloatItem />
+    <div ref={floatCartRef} className="float-cart">
+      <span>
+        You have <span>{cartItems?.length}</span>{" "}
+        {cartItems?.length === 1 ? "item" : "items"} in your cart
+      </span>
+      <ul className="cart-items-float">
+        {cartItems &&
+          cartItems.map((item) => (
+            <CartFloatItem
+              key={item?.id}
+              cartItem={item}
+              product={item?.products}
+            />
+          ))}
       </ul>
       <div className="subtotal-float">
         <h2>Subtotal</h2>
-        <h2>$200.00</h2>
+        <h2>${totalPriceDiscount}</h2>
       </div>
       <div className="buttons-float">
-        {/* <button className='go-to-cart-float'>
-          <Link to="/cart">
-            View Cart
-          </Link>
+        <button onClick={() => navigate("/cart")} className="go-to-cart-float">
+          View Cart
         </button>
-        <button className='go-to-checkout-float'>
-          <Link to="/checkout">
-            Checkout
-          </Link>
-        </button> */}
+        <button
+          onClick={() => navigate("/checkout")}
+          className="go-to-checkout-float"
+        >
+          Checkout
+        </button>
       </div>
     </div>
-  )
+  );
 }

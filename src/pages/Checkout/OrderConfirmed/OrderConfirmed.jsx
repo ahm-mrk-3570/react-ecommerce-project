@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import './OrderConfirmed.css';
 
-export default function OrderConfirmed({ orderConfirmedRef }) {
+export default function OrderConfirmed({ showConfirmed }) {
   const navigate = useNavigate();
 
   const handleOrder = () => {
@@ -13,7 +13,7 @@ export default function OrderConfirmed({ orderConfirmedRef }) {
   }
 
   return (
-    <div ref={orderConfirmedRef} className='bg-order-confirmed'>
+    <div style={{ display: showConfirmed === true ? "flex" : "none" }} className='bg-order-confirmed'>
       <div className="order-confirmed">
         <div className="order-confirmed-img">
           <svg height={35} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round">

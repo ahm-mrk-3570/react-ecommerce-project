@@ -14,14 +14,14 @@ header {
   margin: 0 auto;
 }
 
-.header-left , .header-left > a{
+.header-left,
+.header-left > a {
   height: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: start;
   gap: 0.35rem;
-  animation: header-left-animat 1s;
 }
 
 @keyframes header-left-animat {
@@ -40,7 +40,7 @@ header {
   height: 50%;
 }
 
-.header-left:hover a{
+.header-left:hover a {
   color: var(--text-color);
 }
 
@@ -51,7 +51,6 @@ header {
   align-items: center;
   justify-content: center;
   gap: 2.5rem;
-  animation: header-middle-animat 1s ease-in;
 }
 
 @keyframes header-middle-animat {
@@ -75,14 +74,19 @@ header {
   text-wrap: nowrap;
   gap: 0.25rem;
   cursor: pointer;
-  transition: scale 0.5s, color 0.5s;
+  transition:
+    scale 0.5s,
+    color 0.5s;
 }
 
 .header-middle > li > a {
-  transition: scale 0.5s, color 0.5s;
+  transition:
+    scale 0.5s,
+    color 0.5s;
 }
 
-.header-middle > li:hover, .header-middle > li:hover  a {
+.header-middle > li:hover,
+.header-middle > li:hover a {
   scale: 1.2;
   color: var(--list-item-hover);
 }
@@ -93,7 +97,6 @@ header {
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
-  animation: header-right-animat 1s;
 }
 
 @keyframes header-right-animat {
@@ -118,47 +121,54 @@ header {
   border: none;
 }
 
-.items > button {
+.items > div {
   background-color: transparent;
   border: none;
   cursor: pointer;
-  transition: filter 0.5s, color 0.5s, scale 0.5s;
+  transition:
+    filter 0.5s,
+    color 0.5s,
+    scale 0.5s;
   color: var(--text-color);
 }
 
-.items > button > svg {
-  transition: filter 0.5s, color 0.5s, scale 0.5s;
+.items > div > svg {
+  transition:
+    filter 0.5s,
+    color 0.5s,
+    scale 0.5s;
 }
 
-.items > button:nth-child(1) > svg:hover {
-  filter: drop-shadow(0 0 5px #ffd54b)
-          drop-shadow(0 0 5px #ffd54b)
-          drop-shadow(0 0 5px #ffd54b)
-          drop-shadow(0 0 5px #ffd54b);
+.items svg {
+  transition:
+    filter 0.5s,
+    color 0.5s,
+    scale 0.5s;
+}
+
+.items > div:nth-child(1) > svg:hover {
+  filter: drop-shadow(0 0 5px #ffd54b) drop-shadow(0 0 5px #ffd54b)
+    drop-shadow(0 0 5px #ffd54b) drop-shadow(0 0 5px #ffd54b);
   color: black;
   scale: 1.2;
 }
 
-.items > button:nth-child(2) > svg:hover {
-  filter: drop-shadow(0 0 5px #ff4b4b)
-          drop-shadow(0 0 5px #ff4b4b)
-          drop-shadow(0 0 5px #ff4b4b)
-          drop-shadow(0 0 5px #ff4b4b);
+.items svg:hover {
+  filter: drop-shadow(0 0 5px #ff4b4b) drop-shadow(0 0 5px #ff4b4b)
+    drop-shadow(0 0 5px #ff4b4b) drop-shadow(0 0 5px #ff4b4b);
   color: white;
   scale: 1.2;
 }
 
-.items > button:nth-child(3) > svg:hover {
-  filter: drop-shadow(0 0 5px #8dff4b)
-          drop-shadow(0 0 5px #8dff4b)
-          drop-shadow(0 0 5px #8dff4b)
-          drop-shadow(0 0 5px #8dff4b);
+.items > div:nth-child(3) > svg:hover {
+  filter: drop-shadow(0 0 5px #8dff4b) drop-shadow(0 0 5px #8dff4b)
+    drop-shadow(0 0 5px #8dff4b) drop-shadow(0 0 5px #8dff4b);
   color: black;
   scale: 1.2;
 }
 
-.items > button:hover .items > button > svg {
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+.items > div:hover .items > div > svg {
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .login {
@@ -171,11 +181,13 @@ header {
   padding: 0.55rem 1.5rem;
   border-radius: 0.5rem;
   position: relative;
-  transition: scale 0.5s, transform 0.5s;
+  transition:
+    scale 0.5s,
+    transform 0.5s;
 }
 
 .login::before {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -3px;
   right: -3px;
@@ -209,7 +221,8 @@ header {
   border-radius: 0.75rem;
 }
 
-.shop-menu:hover ~ .navigation, .navigation:hover {
+.shop-menu:hover ~ .navigation,
+.navigation:hover {
   opacity: 1;
   pointer-events: auto;
 }
@@ -223,10 +236,12 @@ header {
   top: 50px;
   gap: 1rem;
   border-radius: 0.75rem;
-  box-shadow: 2px 2px 15px rgba(0,0,0,0.3);
+  box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3);
   padding: 1rem;
   opacity: 0;
-  transition: opacity 1s ease, visibility 1s;
+  transition:
+    opacity 1s ease,
+    visibility 1s;
   z-index: 200;
   background-color: var(--bg-color);
   left: 48%;
@@ -239,12 +254,14 @@ header {
   font-size: 1.5rem;
 }
 
-.navigation h3, .navigation span {
+.navigation h3,
+.navigation span {
   transition: scale 0.5s;
   cursor: pointer;
 }
 
-.navigation h3:hover, .navigation span:hover {
+.navigation h3:hover,
+.navigation span:hover {
   scale: 1.2;
 }
 
@@ -263,7 +280,8 @@ header {
   gap: 1.25rem;
 }
 
-.navigation > div > h3, .navigation > div > span {
+.navigation > div > h3,
+.navigation > div > span {
   text-wrap: nowrap;
 }
 
@@ -284,7 +302,7 @@ header {
 }
 
 .menu::before {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -3px;
   right: -3px;
@@ -300,7 +318,7 @@ header {
 
 /* Responsive */
 /* below 300px */
-@media (max-width : 299px) {
+@media (max-width: 299px) {
   .header-middle {
     display: none;
   }
@@ -311,7 +329,7 @@ header {
 }
 
 /* below 480px -- above 300px */
-@media (min-width : 300px) and (max-width : 479px) {
+@media (min-width: 300px) and (max-width: 479px) {
   .items {
     display: none;
   }
@@ -325,7 +343,7 @@ header {
   }
 }
 
-@media (min-width : 480px) and (max-width : 719px) {
+@media (min-width: 480px) and (max-width: 719px) {
   .header-middle {
     display: none;
   }
@@ -340,7 +358,7 @@ header {
 }
 
 /* below 768px -- above 480px */
-@media (min-width : 720px) and (max-width : 767px) {
+@media (min-width: 720px) and (max-width: 767px) {
   .items {
     display: none;
   }
@@ -365,12 +383,12 @@ header {
   }
 }
 
-@media (min-width : 768px) and (max-width : 900px) {
+@media (min-width: 768px) and (max-width: 900px) {
   .header {
     width: 100%;
     padding: 0 0.4rem;
   }
-  
+
   .login:hover {
     color: var(--text-secondary-color);
     scale: 1.2;
@@ -401,12 +419,12 @@ header {
 }
 
 /* below 1024px -- above 768px */
-@media (min-width : 901px) and (max-width : 1023px) {
+@media (min-width: 901px) and (max-width: 1023px) {
   .header {
     width: 100%;
     padding: 0 0.4rem;
   }
-  
+
   .menu {
     display: none;
   }
@@ -427,13 +445,13 @@ header {
 }
 
 /* below 1280px -- above 1024px */
-@media (min-width : 1024px) and (max-width : 1279px) {
+@media (min-width: 1024px) and (max-width: 1279px) {
   .menu {
     display: none;
   }
 }
 
-@media (min-width : 1280px) {
+@media (min-width: 1280px) {
   .menu {
     display: none;
   }
