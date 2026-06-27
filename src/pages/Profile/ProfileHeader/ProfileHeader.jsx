@@ -17,7 +17,7 @@ export default function ProfileHeader() {
   const title = titles[location];
 
   return (
-    <div className="header-profile">
+    <div className="header-profile" style={{ padding: "0 1rem" }}>
       <h3>{title}</h3>
     </div>
   );
