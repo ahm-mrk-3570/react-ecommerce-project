@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 
-export default function ColorPLM({ title, count, filterOpen }) {
+export default function ColorPLM({ title, count, onClose }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const color = searchParams.get("color");
 
@@ -16,17 +16,12 @@ export default function ColorPLM({ title, count, filterOpen }) {
 
       return params;
     });
+
+    onClose();
   };
 
   return (
-    <li
-      onClick={handleFilter}
-      style={{
-        display: filterOpen === 2 ? "flex" : "none",
-        backgroundColor: color === title && "var(--shadow)",
-        borderRadius: "0.5rem",
-      }}
-    >
+    <li onClick={handleFilter}>
       <div className="color-container-plm">
         <span
           style={{

@@ -1,69 +1,75 @@
-import { useRef } from 'react';
-import AddReview from '../../../components/AddReview/AddReview';
-import CommentReview from '../../../components/CommentReview/CommentReview';
-import './ProductFineInformation.css';
+import { useState } from "react";
+import AddReview from "../../../components/AddReview/AddReview";
+import CommentReview from "../../../components/CommentReview/CommentReview";
+import "./ProductFineInformation.css";
+import _ from "lodash";
 
-export default function ProductFineInformation() {
-  const desc_section = useRef(null);
-  const additional_section = useRef(null);
-  const review_section = useRef(null);
+export default function ProductFineInformation({ product, reviews, setReviews }) {
+  const [secion, setSection] = useState(0);
+  
 
-  const handleFrag = (sec) => {
-    if(sec === "description") {
-      additional_section.current.style.display = "none";
-      review_section.current.style.display = "none";
-      desc_section.current.style.display = "flex";
-    } else if(sec === "additional") {
-      desc_section.current.style.display = "none";
-      review_section.current.style.display = "none";
-      additional_section.current.style.display = "flex";
-    } else if(sec === "review") {
-      additional_section.current.style.display = "none";
-      desc_section.current.style.display = "none";
-      review_section.current.style.display = "inline";
-    } else {
-      additional_section.current.style.display = "none";
-      review_section.current.style.display = "none";
-      desc_section.current.style.display = "flex";
-    }
-  }
+  const colors = product?.colors?.join(", ");
+  const size = product?.size?.join(", ");
 
   return (
-    <div className='product-fine-information'>
-      <div className='product-fine-information-main'>
+    <div className="product-fine-information">
+      <div className="product-fine-information-main">
         <div className="header-product-fine-info">
-          <div className="description-fine" onClick={() => handleFrag('description')}>
+          <div
+            onClick={() => setSection(0)}
+            className={`description-fine ${secion === 0 && "section-active"}`}
+          >
             Description
           </div>
-          <div className="additional-fine" onClick={() => handleFrag('additional')}>
+          <div
+            onClick={() => setSection(1)}
+            className={`additional-fine ${secion === 1 && "section-active"}`}
+          >
             Additional Information
           </div>
-          <div className="review-fine" onClick={() => handleFrag('review')}>
+          <div
+            onClick={() => setSection(2)}
+            className={`review-fine ${secion === 2 && "section-active"}`}
+          >
             Reviews
           </div>
         </div>
         <div className="container-product-fine-info">
-          <div ref={desc_section} className="description-main-fine">
-            It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.
+          <div
+            style={{ display: secion === 0 ? "flex" : "none" }}
+            className="description-main-fine"
+          >
+            {product.description}
           </div>
-          <div ref={additional_section} className="additional-main-fine">
-            <div className='additional-container-item'>
+          <div
+            style={{ display: secion === 1 ? "flex" : "none" }}
+            className="additional-main-fine"
+          >
+            <div className="additional-container-item">
               <p>Color </p>
-              <span>Red, Blue, Orange, Black, Green, Yellow</span>
+              <span>{colors}</span>
             </div>
-            <div className='additional-container-item'>
+            <div className="additional-container-item">
               <p>Size </p>
-              <span>S, M, L, XL, XXL</span>
+              <span>{size}</span>
             </div>
           </div>
-          <div ref={review_section} className="review-main-fine">
-            <h2>Customer Reviews</h2>
-            <CommentReview />
-            <CommentReview />
-            <AddReview />
+          <div
+            style={{ display: secion === 2 ? "block" : "none" }}
+            className="review-main-fine"
+          >
+            <h4>Customer Reviews</h4>
+            {reviews.length !== 0 ? (
+              reviews.map((r, i) => (
+                <CommentReview review={r} key={i} />
+              ))
+            ) : (
+              <p style={{ marginBlock: "1rem" }}>No comment yet...</p>
+            )}
+            <AddReview product={product} setReviews={setReviews} />
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -10,7 +10,7 @@ import Features from '../../components/Features/Features';
 import Footer from '../../components/Footer/Footer';
 import DriverMenu from '../../components/DriverMenu/DriverMenu';
 
-export default function MainPage({ menuRef, btnMenuRef, openMenu }) {
+export default function MainPage() {
   return (
     <>
       <title>Crimba</title>
@@ -22,7 +22,6 @@ export default function MainPage({ menuRef, btnMenuRef, openMenu }) {
       <InstagramStories />
       <Features />
       <Footer />
-      <DriverMenu menuRef={menuRef} />
     </>
   )
 }

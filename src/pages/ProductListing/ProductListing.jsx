@@ -69,7 +69,7 @@ export default function ProductListing() {
   return (
     <>
       <title>All Products</title>
-      <div className="main-products-page">
+      <div className="main-products-page container-custom">
         <AddressBar address="Shop > All Products" />
         <div className="bottom-main">
           <ProductListMenu />

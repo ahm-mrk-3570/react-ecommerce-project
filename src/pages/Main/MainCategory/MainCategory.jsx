@@ -51,7 +51,7 @@ export default function MainCategory() {
   const navigate = useNavigate();
 
   return (
-    <div className="category-main">
+    <div className="category-main container-custom">
       <div className="category-header">
         <div className="title-category">
           <h1>Shop by Categories</h1>
@@ -91,7 +91,7 @@ export default function MainCategory() {
       </div>
       <Swiper
         modules={[Navigation]}
-        spaceBetween={15}
+        spaceBetween={30}
         slidesPerView={4}
         navigation={{
           prevEl: prevRef.current,
@@ -104,32 +104,32 @@ export default function MainCategory() {
         breakpoints={{
           0: {
             slidesPerView: 1,
-            spaceBetween: 0
           },
-          480: {
+          1024: {
             slidesPerView: 2,
-            spaceBetween: 0
           },
-          768: {
+          1280: {
             slidesPerView: 3,
           },
-          1200: {
+          1536: {
             slidesPerView: 4,
           },
         }}
       >
         {items.map((item) => {
           return (
-            <SwiperSlide key={item.id} onClick={() => navigate(`${item.target}`)}>
+            <SwiperSlide
+              key={item.id}
+              onClick={() => navigate(`${item.target}`)}
+            >
               <div key={item.id} className="card-container">
-                <div className="card-category-item">
-                  <img src={item.img} alt={item.title} />
-                  <div className="card-detail">
-                    <Link to="/">
-                      <button className="category-button">{item.title}</button>
-                    </Link>
-                  </div>
-                </div>
+                <img src={item.img} alt={item.title} />
+                <button
+                  onClick={() => navigate(item.target)}
+                  className="category-button"
+                >
+                  {item.title}
+                </button>
               </div>
             </SwiperSlide>
           );

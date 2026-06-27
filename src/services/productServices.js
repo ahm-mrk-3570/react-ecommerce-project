@@ -1,4 +1,4 @@
-import { supabase } from '../lib/supabase';
+import { supabase } from "../lib/supabase";
 
 export const getProduct = async (id) => {
   const { data, error } = await supabase
@@ -11,7 +11,10 @@ export const getProduct = async (id) => {
 };
 
 export const getProducts = async (filters) => {
-  let query = supabase.from("products").select("*", {count: "exact"});
+  let query = supabase
+    .from("products")
+    .select("*", { count: "exact" })
+    .order("id", { ascending: true });
 
   const { category, size, color, minPrice, maxPrice, page = 1 } = filters;
 
@@ -35,7 +38,7 @@ export const getProducts = async (filters) => {
     query = query.lte("price", Number(maxPrice));
   }
 
-  const limit = 8;
+  const limit = 10;
   const from = (page - 1) * limit;
   const to = from + limit - 1;
 
@@ -43,5 +46,17 @@ export const getProducts = async (filters) => {
 
   const { data, error, count } = await query;
 
-  return { data, error, count, totalPages: Math.ceil((count || 0) / limit)};
+  return { data, error, count, totalPages: Math.ceil((count || 0) / limit) };
+};
+
+export const getProductsBestSeller = async () => {
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .order("total_sold", { ascending: false })
+    .limit(8);
+
+  if(error) return;
+
+  return { data, error };
 };

@@ -5,180 +5,188 @@
   justify-content: start;
   gap: 1.5rem;
   padding: 1.75rem;
-  width: 370px;
-}
+  width: 290px;
 
-.product-plm-title {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-}
+  @media (width <= 1280px) {
+    width: 225px !important;
+    padding: 0.5rem !important;
+  }
 
-.product-plm-title > h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
-}
+  > div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 0.75rem;
+    transition: all 0.3s ease-in-out;
+  }
 
-.product-plm-title {
-  cursor: pointer;
-}
+  .product-plm-title {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
 
-.product-listing-menu > div {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: start;
-  gap: 0.75rem;
-  transition: all 0.3s ease-in-out;
-}
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      text-wrap: nowrap;
+    }
+  }
 
-.category-selector-plm {
-  width: 100%;
-  height: auto;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: start;
-  gap: 0.3rem;
-}
+  .category-selector-plm {
+    width: 100%;
+    height: auto;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 0.3rem;
 
-.category-selector-plm > li {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-  gap: 0.5rem;
-  padding: 0.35rem;
-  cursor: pointer;
-}
+    li {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: start;
+      gap: 0.5rem;
+      padding: 0.35rem;
+      cursor: pointer;
 
-.category-selector-plm > li > label {
-  flex: 1;
-  cursor: pointer;
-}
+      label {
+        flex: 1;
+        cursor: pointer;
+      }
+    }
 
-.category-selector-plm input {
-  width: 15px;
-  height: 15px;
-  cursor: pointer;
-}
+    input {
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
 
-.filter-by-price-plm {
-  padding-inline: 0.35rem;
-}
+    .filter-by-price-plm {
+      padding-inline: 0.35rem;
+    }
+  }
 
-.price-enter {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-  gap: 0.75rem;
-  padding-block: 0.35rem;
-}
+  .price-enter {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    gap: 0.75rem;
+    padding-block: 0.35rem;
 
-.price-enter > input {
-  padding: 0.75rem;
-  width: 50%;
-  border-radius: 0.5rem;
-  border: 1px solid var(--border-color);
-}
+    input {
+      padding: 0.75rem;
+      width: 50%;
+      border-radius: 0.5rem;
+      border: 1px solid var(--border);
+      outline: none;
+    }
+  }
 
-.submit-price-filter {
-  width: 100%;
-  height: 45px;
-  border-radius: 0.75rem;
-  border: none;
-  background-color: var(--list-item-hover);
-  color: var(--bg-color);
-  cursor: pointer;
-}
+  .submit-price-filter {
+    width: 100%;
+    height: 45px;
+    border-radius: 0.75rem;
+    border: none;
+    background-color: var(--surface);
+    color: var(--text-primary);
+    cursor: pointer;
+    margin-top: 0.3rem;
+    transition: all 0.3s;
 
-.submit-price-filter:disabled {
-  opacity: 0.5;
-}
+    &:hover {
+      background-color: var(--surface-2);
+    }
 
-.color-filter-plm {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: start;
-  list-style: none;
-  gap: 0.75rem;
-}
+    &:disabled {
+      opacity: 0.5;
 
-.color-container-plm {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-  gap: 0.75rem;
-}
+      &:hover {
+        background-color: var(--surface);
+      }
+    }
+  }
 
-.color-filter-plm > li {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.35rem;
-  cursor: pointer;
-}
+  .color-filter-plm {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    list-style: none;
+    gap: 0.75rem;
 
-.color-container-plm > label {
-  cursor: pointer;
-}
+    li {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.35rem;
+      cursor: pointer;
 
-.size-filter-plm {
-  width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: start;
-  list-style: none;
-  gap: 0.75rem;
-}
+      .color-container-plm {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: start;
+        gap: 0.75rem;
 
-.size-filter-plm > li {
-  width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.35rem;
-}
+        label {
+          cursor: pointer;
+        }
+      }
+    }
+  }
 
-.size-container-plm {
-  flex: 1;
-  align-self: flex-start;
-  text-align: start;
-}
+  .size-filter-plm {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    list-style: none;
+    gap: 0.75rem;
 
-.size-container-plm {
-  display: flex;
-  flex-direction: row;
-  align-items: start;
-  justify-content: start;
-  gap: 0.75rem;
-}
+    li {
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.35rem;
 
-.size-container-plm > label {
-  flex: 1;
-  cursor: pointer;
-}
+      .size-container-plm {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: start;
+        gap: 0.75rem;
 
-.size-container-plm > input {
-  width: 15px;
-  height: 15px;
-  cursor: pointer;
+        label {
+          flex: 1;
+          cursor: pointer;
+        }
+
+        input {
+          width: 15px;
+          height: 15px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
 }
 
 @media (max-width: 1360px) {
@@ -191,7 +199,4 @@
   .product-listing-menu {
     display: none;
   }
-}
-
-@media (max-width: 768px) {
 }

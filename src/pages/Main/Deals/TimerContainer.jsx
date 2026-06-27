@@ -1,8 +1,8 @@
 export default function TimerContainer({ count, title }) {
   return (
     <div className="timer-container-box">
-      <h2>{count}</h2>
-      <h4>{title}</h4>
+      <h4>{count}</h4>
+      <h6>{title}</h6>
     </div>
   )
 }

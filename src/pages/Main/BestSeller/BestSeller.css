@@ -1,5 +1,4 @@
 .best-seller-container {
-  width: 78%;
   height: auto;
   margin: 0 auto;
   display: flex;
@@ -30,6 +29,10 @@
 /* Responsive */
 /* below 300px */
 @media (max-width : 299px) {
+  .best-seller-container {
+    padding-inline: 1rem;
+  }
+
   .best-seller-items-container {
     grid-template-columns: repeat(1, 1fr);
   }
@@ -37,12 +40,20 @@
 
 /* below 480px -- above 300px */
 @media (min-width : 300px) and (max-width : 479px) {
+  .best-seller-container {
+    padding-inline: 1rem;
+  }
+
   .best-seller-items-container {
     grid-template-columns: repeat(1, 1fr);
   } 
 }
 
 @media (min-width : 480px) and (max-width : 599px) {
+  .best-seller-container {
+    padding-inline: 1rem;
+  }
+
   .best-seller-items-container {
     grid-template-columns: repeat(1, 1fr);
   } 
@@ -50,15 +61,19 @@
 
 /* below 768px -- above 480px */
 @media (min-width : 600px) and (max-width : 767px) {
+  .best-seller-container {
+    padding-inline: 1rem;
+  }
+
   .best-seller-items-container {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
   } 
 }
 
 /* below 1024px -- above 768px */
 @media (min-width : 768px) and (max-width : 1023px) {
   .best-seller-items-container {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

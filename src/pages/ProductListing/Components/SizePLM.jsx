@@ -1,10 +1,10 @@
 import { useSearchParams } from "react-router-dom";
 
-export default function SizePLM({ type, title, count, filterOpen }) {
+export default function SizePLM({ type, title, count, onClose }) {
   const [searchParams, setSearchParams] = useSearchParams();
+  const size = searchParams.get("size");
 
   const handleFilter = (e) => {
-    const value = e.target.value;
 
     setSearchParams((prev) => {
       const params = new URLSearchParams(prev);
@@ -27,12 +27,15 @@ export default function SizePLM({ type, title, count, filterOpen }) {
 
       return params;
     });
+
+    onClose();
   };
 
   return (
-    <li style={{ display: filterOpen === 3 ? "flex" : "none" }}>
+    <li>
       <div className="size-container-plm">
         <input
+          checked={size?.split(",").includes(title)}
           onChange={handleFilter}
           type="checkbox"
           id={`checkbox-${type}`}

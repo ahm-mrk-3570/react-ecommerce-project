@@ -6,9 +6,10 @@ import './Cart.css';
 
 export default function Cart() {
   return (
-    <div className='checkout-page'>
-      <div className="checkout-conent">
-        <h2>Checkout</h2>
+    <div className='checkout-page container-custom'>
+      <title>Cart</title>
+      <div className="checkout-content">
+        <h3>Cart</h3>
         <div className="checkout-section">
           <OrderSummery />
           <PaymentSummery buttonText="Go to checkout" />

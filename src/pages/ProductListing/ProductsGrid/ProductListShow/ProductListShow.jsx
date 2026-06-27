@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./ProductListShow.css";
 
 const ProductListShow = ({
+  id,
   imgLocation,
   title,
   description,
@@ -11,14 +12,21 @@ const ProductListShow = ({
   afterDiscount,
   isWishlist,
   price,
+  handleRemoveFromWishlists,
+  handleAddToWishlists,
+  handleAddToCart,
+  size,
+  colors
 }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="product-list-show">
       <img src={imgLocation} alt="Product Image" />
       <div className="product-details">
         <div className="product-detail">
           <div className="products-name">
-            <h1>{title}</h1>
+            <h3>{title}</h3>
             <p>
               {description} Lorem ipsum dolor sit amet consectetur adipisicing
               elit. Assumenda porro eos autem? Cum autem quisquam sit voluptatem
@@ -66,14 +74,20 @@ const ProductListShow = ({
                 />
               </svg>
             </button>
-            <button>
+            <button
+              onClick={() => {
+                isWishlist === true
+                  ? handleRemoveFromWishlists(id)
+                  : handleAddToWishlists(id);
+              }}
+            >
               {isWishlist === true ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
                   height="24"
                   fill="yellow"
-                  class="bi bi-star-fill"
+                  className="bi bi-star-fill"
                   viewBox="0 0 16 16"
                 >
                   <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
@@ -91,7 +105,7 @@ const ProductListShow = ({
                 </svg>
               )}
             </button>
-            <button>
+            <button onClick={() => navigate(`/product/?id=${id}`)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -119,7 +133,14 @@ const ProductListShow = ({
               )}
             </div>
             <div className="add-to-cart">
-              <button className="btn-add-to-cart-list">Add To Cart</button>
+              <button
+                onClick={() => {
+                  handleAddToCart(size[0], colors[0], id);
+                }}
+                className="btn-add-to-cart-list"
+              >
+                Add To Cart
+              </button>
             </div>
           </div>
         </div>

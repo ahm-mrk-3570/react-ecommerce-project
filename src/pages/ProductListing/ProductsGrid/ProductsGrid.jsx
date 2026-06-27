@@ -9,6 +9,12 @@ import ProductListShow from "./ProductListShow/ProductListShow";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getProducts } from "../../../services/productServices";
+import {
+  addToWishlists,
+  removeWishlist,
+} from "../../../services/favoriteServices";
+import AuthContext from "../../../context/AuthContext";
+import { addToCart } from "../../../services/cartServices";
 
 export default function ProductsGrid() {
   /* State */
@@ -16,7 +22,18 @@ export default function ProductsGrid() {
   /* State */
 
   /* Context */
-  const { products, setProducts, loading, setLoading, page } = useContext(GlobalContext);
+  const {
+    products,
+    setProducts,
+    loading,
+    setLoading,
+    page,
+    wishlists,
+    setWishlists,
+    refreshCart,
+    setCartItems,
+  } = useContext(GlobalContext);
+  const { user } = useContext(AuthContext);
   /* Context */
 
   /* SearchParams */
@@ -33,15 +50,74 @@ export default function ProductsGrid() {
         const { data } = getProducts({ category, size, color, page });
         setProducts(data);
         setLoading(false);
-      } catch(e) {
+      } catch (e) {
         console.log(e.message);
-        toast.error('Something Went Wrong...');
+        toast.error("Something Went Wrong...");
         setLoading(false);
       }
-    }
+    };
 
     fetchFilteredProducts();
-  }, [category, size, color, page])
+  }, [category, size, color, page]);
+
+  const handleAddToWishlists = async (id) => {
+    const { data, error } = await addToWishlists({
+      product_id: id,
+      user_id: user.id,
+    });
+
+    console.log(data);
+
+    if (error) return;
+
+    setWishlists((prev) => [...prev, data]);
+    toast.success("Added Successfully");
+  };
+
+  const handleRemoveFromWishlists = async (favoritesId) => {
+    const { error } = await removeWishlist(favoritesId);
+    if (error) {
+      console.log(error.message);
+      toast.error("Something went wrong..");
+      return;
+    }
+
+    setWishlists((prev) =>
+      prev.filter((item) => item.product_id !== favoritesId),
+    );
+    toast.success("Product deleted from your wishlists");
+  };
+
+  const handleAddToCart = async (productSize, productColor, productId) => {
+    if (!user) {
+      toast.error("Please Login first.");
+      return;
+    }
+    if (productSize === "") {
+      return;
+    }
+
+    if (productColor === "") {
+      return;
+    }
+
+    const cartItem = {
+      user_id: user?.id,
+      product_id: productId,
+      quantity: 1,
+      selected_size: productSize,
+      selected_color: productColor,
+    };
+
+    const { data, error } = await addToCart(cartItem);
+
+    if (error) return;
+
+    await refreshCart();
+
+    setCartItems((prev) => [...prev, data]);
+    toast.success("Cart Added");
+  };
 
   return (
     <>
@@ -137,10 +213,7 @@ export default function ProductsGrid() {
 
               <p>
                 Showing{" "}
-                <span>
-                  1 -{" "}
-                  {products?.length > 8 ? 8 : products?.length}
-                </span>{" "}
+                <span>1 - {products?.length > 10 ? 10 : products?.length}</span>{" "}
                 of{" "}
                 {category === "" || category === null
                   ? products?.length
@@ -164,14 +237,23 @@ export default function ProductsGrid() {
                 products?.map((product) => (
                   <Product
                     key={product.id}
+                    id={product.id}
                     imgLocation={product.pictures[0]}
                     title={product.name}
                     description={product.description}
-                    hasDiscount={product.discountPrice > 0}
-                    beforeDiscount={product.discountPrice}
+                    hasDiscount={product.discountprice > 0}
+                    beforeDiscount={product.discountprice}
                     afterDiscount={product.price}
-                    isWishlist={false}
+                    isWishlist={wishlists?.some(
+                      (w) => w.product_id === product.id,
+                    )}
                     price={product.price}
+                    isAvailaible={product.count > 0}
+                    handleAddToWishlists={handleAddToWishlists}
+                    handleRemoveFromWishlists={handleRemoveFromWishlists}
+                    handleAddToCart={handleAddToCart}
+                    size={product.size}
+                    colors={product.colors}
                   />
                 ))
               ) : (
@@ -195,14 +277,23 @@ export default function ProductsGrid() {
                   return (
                     <ProductListShow
                       key={product.id}
+                      id={product.id}
                       imgLocation={product.pictures[0]}
                       title={product.name}
                       description={product.description}
-                      hasDiscount={product.discountPrice > 0 && true}
-                      beforeDiscount={product.discountPrice}
+                      hasDiscount={product.discountprice > 0}
+                      beforeDiscount={product.discountprice}
                       afterDiscount={product.price}
-                      isWishlist={false}
+                      isWishlist={wishlists?.some(
+                        (w) => w.product_id === product.id,
+                      )}
                       price={product.price}
+                      isAvailaible={product.count > 0}
+                      handleAddToWishlists={handleAddToWishlists}
+                      handleRemoveFromWishlists={handleRemoveFromWishlists}
+                      handleAddToCart={handleAddToCart}
+                      size={product.size}
+                      colors={product.colors}
                     />
                   );
                 })
@@ -223,20 +314,6 @@ export default function ProductsGrid() {
                 </>
               )
             ) : null}
-            {products?.length == 0 ||
-              (!products && (
-                <div
-                  style={{
-                    width: "100%",
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <img src="main-images/products/no-item.gif" alt="" />
-                </div>
-              ))}
           </div>
         </div>
       )}

@@ -5,10 +5,10 @@ import GlobalContext from "../../../context/Context";
 import ProductCardSkeleton from "../../../components/loadingComponents/ProductCardSkeleton";
 
 export default function BestSeller() {
-  const { loading } = useContext(GlobalContext);
+  const { loading, bestSellerProducts, wishlists } = useContext(GlobalContext);
 
   return (
-    <div className="best-seller-container">
+    <div className="best-seller-container container-custom">
       <div className="best-seller-header">Our Bestseller</div>
       <ul className="best-seller-items-container">
         {loading ? (
@@ -17,62 +17,26 @@ export default function BestSeller() {
           ))
         ) : (
           <>
-            <Product
-              imgLocation={`${import.meta.env.BASE_URL}/main-images/banner-main-images/banner.jpg`}
-              title="RoadStar"
-              description="Printed Cotton T-shirt"
-              beforeDiscount="40.00"
-              afterDiscount="38.00"
-            />
-            <Product
-              imgLocation={`${import.meta.env.BASE_URL}/main-images/banner-main-images/banner.jpg`}
-              title="RoadStar"
-              description="Printed Cotton T-shirt"
-              beforeDiscount="40.00"
-              afterDiscount="38.00"
-            />
-            <Product
-              imgLocation={`${import.meta.env.BASE_URL}/main-images/banner-main-images/banner.jpg`}
-              title="RoadStar"
-              description="Printed Cotton T-shirt"
-              beforeDiscount="40.00"
-              afterDiscount="38.00"
-            />
-            <Product
-              imgLocation={`${import.meta.env.BASE_URL}/main-images/banner-main-images/banner.jpg`}
-              title="RoadStar"
-              description="Printed Cotton T-shirt"
-              beforeDiscount="40.00"
-              afterDiscount="38.00"
-            />
-            <Product
-              imgLocation={`${import.meta.env.BASE_URL}/main-images/banner-main-images/banner.jpg`}
-              title="RoadStar"
-              description="Printed Cotton T-shirt"
-              beforeDiscount="40.00"
-              afterDiscount="38.00"
-            />
-            <Product
-              imgLocation={`${import.meta.env.BASE_URL}/main-images/banner-main-images/banner.jpg`}
-              title="RoadStar"
-              description="Printed Cotton T-shirt"
-              beforeDiscount="40.00"
-              afterDiscount="38.00"
-            />
-            <Product
-              imgLocation={`${import.meta.env.BASE_URL}/main-images/banner-main-images/banner.jpg`}
-              title="RoadStar"
-              description="Printed Cotton T-shirt"
-              beforeDiscount="40.00"
-              afterDiscount="38.00"
-            />
-            <Product
-              imgLocation={`${import.meta.env.BASE_URL}/main-images/banner-main-images/banner.jpg`}
-              title="RoadStar"
-              description="Printed Cotton T-shirt"
-              beforeDiscount="40.00"
-              afterDiscount="38.00"
-            />
+            {bestSellerProducts &&
+              bestSellerProducts.map((product) => {
+                return (
+                  <Product
+                    key={product.id}
+                    id={product.id}
+                    imgLocation={product.pictures[0]}
+                    title={product.name}
+                    description={product.description}
+                    hasDiscount={product.discountprice > 0}
+                    beforeDiscount={product.discountprice}
+                    afterDiscount={product.price}
+                    isWishlist={wishlists?.some(
+                      (w) => w.product_id === product.id,
+                    )}
+                    price={product.price}
+                    isAvailaible={product.count > 0}
+                  />
+                );
+              })}
           </>
         )}
       </ul>

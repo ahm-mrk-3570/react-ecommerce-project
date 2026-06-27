@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { useSearchParams } from "react-router-dom";
 import GlobalContext from "../../../context/Context";
 
-export default function CategoryPLM({ type, title, filterOpen }) {
+export default function CategoryPLM({ type, title, onClose }) {
   /* Context */
   const { loading } = useContext(GlobalContext);
   /* Context */
@@ -18,19 +18,21 @@ export default function CategoryPLM({ type, title, filterOpen }) {
       const params = new URLSearchParams(prev);
 
       if (e.target.checked) {
-        params.set("category", title.split(' ').join('-').toLowerCase());
+        params.set("category", title.split(" ").join("-").toLowerCase());
       } else {
         params.delete("category");
       }
 
       return params;
     });
+    
+    onClose();
   };
 
   return (
-    <li style={{ display: filterOpen === 4 ? "flex" : "none" }}>
+    <li>
       <input
-        checked={category === title.split(' ').join('-').toLowerCase()}
+        checked={category === title.split(" ").join("-").toLowerCase()}
         disabled={loading === true}
         onChange={handleFilter}
         type="checkbox"

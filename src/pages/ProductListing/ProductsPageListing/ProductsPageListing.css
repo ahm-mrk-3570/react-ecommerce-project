@@ -5,31 +5,31 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-}
 
-.product-page-handler {
-  width: auto;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
+  .product-page-handler {
+    width: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 
-.page-number {
-  height: 100%;
-  width: 45px;
-  background: none;
-  font-size: 1.5rem;
-  font-weight: bold;
-  border: 1px solid var(--text-color);
-  color: var(--text-color);
-  border-radius: 0.25rem;
-  cursor: pointer;
-}
+    .page-number {
+      height: 100%;
+      width: 45px;
+      background: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      border-radius: 0.25rem;
+      cursor: pointer;
+    }
 
-.active-page-number {
-  background-color: var(--bg-secondary-color);
-  color: var(--text-secondary-color);
+    .active-page-number {
+      background-color: var(--surface);
+      color: var(--text-primary);
+    }
+  }
 }

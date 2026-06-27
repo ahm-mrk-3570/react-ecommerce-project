@@ -4,13 +4,13 @@ import ReviewOrder from './ReviewOrder/ReviewOrder';
 import ReviewAddress from './ReviewAddress/ReviewAddress';
 import ReviewPayments from './ReviewPayments/ReviewPayments';
 
-export default function Review({ review }) {
+export default function Review({ step, setStep }) {
   return (
-    <div ref={review} className='review-checkout'>
-      <RoadCheckout step='review' />
+    <div style={{display: step === 3 ? "flex" : "none"}} className='review-checkout'>
+      <RoadCheckout step="review" setStep={setStep} />
       <ReviewOrder />
-      <ReviewAddress />
-      <ReviewPayments />
+      <ReviewAddress setStep={setStep} />
+      <ReviewPayments setStep={setStep} />
     </div>
   )
 }
