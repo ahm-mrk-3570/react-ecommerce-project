@@ -61,6 +61,9 @@ export default function ProductsGrid() {
   }, [category, size, color, page]);
 
   const handleAddToWishlists = async (id) => {
+    if(!user) {
+      toast.error("Login first...")
+    }
     const { data, error } = await addToWishlists({
       product_id: id,
       user_id: user.id,
