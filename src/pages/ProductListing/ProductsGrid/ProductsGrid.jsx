@@ -66,8 +66,6 @@ export default function ProductsGrid() {
       user_id: user.id,
     });
 
-    console.log(data);
-
     if (error) return;
 
     setWishlists((prev) => [...prev, data]);

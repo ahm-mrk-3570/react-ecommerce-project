@@ -16,6 +16,10 @@ export default function AddReview({ product, setReviews }) {
   const { user, profile } = useContext(AuthContext);
 
   const handleCommitReview = async (values) => {
+    if(!user) {
+      toast.error("Login First....");
+      return;
+    }
     const { data, error } = await createReview(
       values,
       user.id,

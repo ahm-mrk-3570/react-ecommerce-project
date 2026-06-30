@@ -19,7 +19,7 @@ export default function Product({
   handleAddToWishlists,
   handleAddToCart,
   size,
-  colors
+  colors,
 }) {
   const navigate = useNavigate();
 
