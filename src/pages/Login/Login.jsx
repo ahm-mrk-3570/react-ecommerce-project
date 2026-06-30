@@ -7,6 +7,7 @@ import { Field, Formik, Form, ErrorMessage } from "formik";
 import { supabase } from "../../lib/supabase";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { signIn } from "../../services/AuthServices";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,12 +16,12 @@ export default function Login() {
 
   const handleLogin = async ({ email, password }) => {
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      const { data, error } = await signIn({ email, password });
 
-      if (error) throw error;
+      if(error) {
+        toast.error(error.message);
+        return;
+      }
 
       toast.success("Login Successfully..");
       navigate("/");

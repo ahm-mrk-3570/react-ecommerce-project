@@ -7,6 +7,7 @@ import AuthContext from "../../../../../context/AuthContext";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import GlobalContext from "../../../../../context/Context";
+import { resetPassword, signOut } from "../../../../../services/AuthServices";
 
 // ── Defined outside to avoid re-render / focus issues ──
 const Toggle = ({ checked, onToggle }) => (
@@ -49,17 +50,15 @@ export default function Setting() {
   const { themeMode, toggleTheme } = useContext(GlobalContext);
 
   const logout = async () => {
-    const { error } = await supabase.auth.signOut();
+    const { error } = await signOut();
 
     if (error) {
-      console.log(error);
+      toast.error(error.message);
       return;
     }
 
     localStorage.removeItem("checkout");
-
     setUser(null);
-
     navigate("/login");
   };
 
@@ -84,7 +83,7 @@ export default function Setting() {
 
   const handleChangePassword = async () => {
     if (!user?.email) return;
-    const { error } = await supabase.auth.resetPasswordForEmail(user.email);
+    const { error } = await resetPassword(user.email)
     if (error) toast.error(error.message);
     else toast.success("Password reset link sent to your email");
   };

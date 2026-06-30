@@ -6,58 +6,26 @@ import { registerSchema } from "../../validation/authValidation";
 import { Link, useNavigate } from "react-router-dom";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { toast } from "react-toastify";
-import { supabase } from "../../lib/supabase";
 import { useState } from "react";
+import { signUp } from "../../services/AuthServices";
+import { uploadAvatar } from "../../services/uploadServices";
+import { updateAvatar } from "../../services/profileServices";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleRegister = async ({
-    firstName,
-    lastName,
-    avatar,
-    email,
-    password,
-    phoneNumber,
-  }) => {
+  const handleRegister = async ({ firstName, lastName, avatar, email, password, phoneNumber }) => {
+    const formData = { firstName, lastName, email, password, phoneNumber };
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            first_name: firstName,
-            last_name: lastName,
-            phone_number: phoneNumber,
-          },
-        },
-      });
+      const { data, error } = await signUp(formData);
 
-      if (error) throw error;
-      if (!data.user) throw new Error("Registration failed.");
+      if (error) return;
 
-      // ✅ Only attempt avatar upload if user has an active session
       if (avatar && data.session) {
-        const filePath = `avatars/${data.user.id}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from("avatars")
-          .upload(filePath, avatar, { upsert: true });
-
-        if (uploadError) throw uploadError;
-
-        const { data: publicUrlData } = supabase.storage
-          .from("avatars")
-          .getPublicUrl(filePath);
-
-        const { error: updateError } = await supabase
-          .from("profiles")
-          .update({ avatar: publicUrlData.publicUrl })
-          .eq("id", data.user.id);
-
-        if (updateError) throw updateError;
+        const avatarUrl = await uploadAvatar(data.user.id, avatar);
+        await updateAvatar(data.user.id, avatarUrl);
       } else if (avatar && !data.session) {
         console.log("Avatar skipped — email confirmation required first");
       }

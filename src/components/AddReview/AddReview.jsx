@@ -8,39 +8,22 @@ import { supabase } from "../../lib/supabase";
 import { toast } from "react-toastify";
 import GlobalContext from "../../context/Context";
 import AuthContext from "../../context/AuthContext";
+import { CreateOrder } from "../../services/orderServices";
+import { createReview } from "../../services/reviewServices";
 
 export default function AddReview({ product, setReviews }) {
   const [ratingStar, setRatingStar] = useState(null);
   const { user, profile } = useContext(AuthContext);
 
-  const handleCommitReview = async ({ name, email, review, rating }) => {
-    const { data, error } = await supabase
-      .from("reviews")
-      .insert({
-        name,
-        email,
-        review,
-        rating,
-        user_id: user.id,
-        product_id: product.id,
-        avatar: profile.avatar
-      })
-      .select(
-        `
-      *,
-      profiles (
-        first_name,
-        last_name,
-        avatar
-      )
-    `,
-      )
-      .single();
+  const handleCommitReview = async (values) => {
+    const { data, error } = await createReview(
+      values,
+      user.id,
+      product.id,
+      profile.avatar,
+    );
 
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
+    if (error) toast.error(error.message);
 
     setReviews((prev) => [...prev, data]);
 
@@ -85,7 +68,9 @@ export default function AddReview({ product, setReviews }) {
                 </div>
                 <p style={{ color: "red" }}>{errors.rating && errors.rating}</p>
               </div>
-              <p style={{ color: "var(--error)" }}>{errors.avatar && errors.avatar}</p>
+              <p style={{ color: "var(--error)" }}>
+                {errors.avatar && errors.avatar}
+              </p>
               <label htmlFor="name">Name</label>
               <Field
                 type="text"

@@ -37,6 +37,10 @@ import { getProductsBestSeller } from "./services/productServices";
 import EnterPassword from "./pages/EnterPassword/EnterPassword";
 import { createPortal } from "react-dom";
 import DriverMenu from "./components/DriverMenu/DriverMenu";
+import {
+  getCurrentSession,
+  subscribeToAuthChange,
+} from "./services/AuthServices";
 
 function App() {
   /* State */
@@ -97,17 +101,25 @@ function App() {
   }, [appliedTheme]);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setLoadingUser(false);
-    });
+    const loadSession = async () => {
+      try {
+        const session = await getCurrentSession();
+
+        setUser(session?.user ?? null);
+        setLoadingUser(false);
+      } catch (error) {
+        console.log(error.message);
+        setLoadingUser(false);
+      }
+    };
+
+    loadSession();
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = subscribeToAuthChange((_event, session) => {
       setUser(session?.user ?? null);
     });
-
     return () => subscription.unsubscribe();
   }, []);
 
@@ -126,10 +138,8 @@ function App() {
   }, [user]);
 
   useEffect(() => {
-    if (!user) return;
-
     const fetchReviews = async () => {
-      const { data, error } = await getReviews(user.id);
+      const { data, error } = await getReviews();
 
       if (error) return;
 
@@ -137,7 +147,7 @@ function App() {
     };
 
     fetchReviews();
-  }, [user]);
+  }, []);
 
   useEffect(() => {
     if (!user) return;
@@ -223,6 +233,15 @@ function App() {
 
     fetchBestSellerProducts();
   }, []);
+
+  useEffect(() => {
+    if (!portalEl.current) return;
+    portalEl.current.style.display = isDriverPortalOpen ? "flex" : "none";
+    document.body.style.overflow = isDriverPortalOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isDriverPortalOpen]);
   /* Effect */
 
   /* Functions */
@@ -258,15 +277,6 @@ function App() {
     setTotalPriceDiscount(total_price?.total_with_discount ?? 0);
   };
   /* Functions */
-
-  useEffect(() => {
-    if (!portalEl.current) return;
-    portalEl.current.style.display = isDriverPortalOpen ? "flex" : "none";
-    document.body.style.overflow = isDriverPortalOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isDriverPortalOpen]);
 
   // ── Handlers ──
   const handleOpenDriverMenu = () => {
@@ -311,7 +321,7 @@ function App() {
         appliedTheme,
         bestSellerProducts,
         themeMode,
-        handleOpenDriverMenu
+        handleOpenDriverMenu,
       }}
     >
       <AuthContext.Provider
@@ -325,7 +335,11 @@ function App() {
             <ToastContainer theme={appliedTheme} rtl={false} />
             {createPortal(
               isDriverPortalOpen ? (
-                <div className="portal-overlay" style={{ justifyContent: "end" }} onClick={handleOverlayClick}>
+                <div
+                  className="portal-overlay"
+                  style={{ justifyContent: "end" }}
+                  onClick={handleOverlayClick}
+                >
                   <DriverMenu handleClose={handleClose} />
                 </div>
               ) : null,

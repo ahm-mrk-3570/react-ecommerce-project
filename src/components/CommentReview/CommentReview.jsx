@@ -5,7 +5,7 @@ export default function CommentReview({ review }) {
   return (
     <div className='main-comment-review-p'>
       <div className="top-comment-review">
-        <img src={review.profiles?.avatar} width={65} height={65} alt="profile" />
+        <img src={review.avatar} width={65} height={65} alt="profile" />
         <div>
           <p>{review.name}</p>
           <img src={`main-images/stars/${review.rating * 10}.svg`} height={24} alt="rating" />

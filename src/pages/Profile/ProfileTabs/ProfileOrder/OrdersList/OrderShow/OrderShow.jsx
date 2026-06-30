@@ -3,6 +3,9 @@ import { useContext, useEffect, useState } from "react";
 import "./OrderShow.css";
 import dayjs from "dayjs";
 import ProfileContext from "../../../../../../context/ProfileContext";
+import { cancelOrder, getOrders } from "../../../../../../services/orderServices";
+import { toast } from "react-toastify";
+import AuthContext from "../../../../../../context/AuthContext";
 
 const status_styles = {
   Delivered: { bg: "rgba(16,185,129,0.12)", color: "#10b981" },
@@ -11,7 +14,7 @@ const status_styles = {
   Cancelled: { bg: "rgba(239,68,68,0.12)", color: "#ef4444" },
 };
 
-export default function OrderShow({ order }) {
+export default function OrderShow({ order, setOrders }) {
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [isShow, setIsShow] = useState(false);
 
@@ -19,6 +22,26 @@ export default function OrderShow({ order }) {
   const orderId = order?.id.split("").slice(0, 13).join("");
 
   const { handleOpen } = useContext(ProfileContext);
+  const { user } = useContext(AuthContext);
+
+  const handleCancell = async (orderId) => {
+    try {
+      const order = await cancelOrder(orderId);
+      const { data, error } = await getOrders(user.id);
+
+      if (error) {
+        console.log(error);
+        return;
+      }
+
+      setOrders(data);
+
+      toast.success("Order cancelled.");
+    } catch (err) {
+      console.log(err);
+      toast.error(err.message);
+    }
+  };
 
   useEffect(() => {
     switch (order.status) {
@@ -56,7 +79,10 @@ export default function OrderShow({ order }) {
           borderBottom: isShow && "1px solid var(--bg-secondary-color)",
         }}
       >
-        <div className="order-show-detail" style={{ justifyContent: isShow === true ? "start" : "space-evenly" }}>
+        <div
+          className="order-show-detail"
+          style={{ justifyContent: isShow === true ? "start" : "space-evenly" }}
+        >
           <p>
             <span className="order-title">Order Id:</span> {orderId}...
           </p>
@@ -83,7 +109,10 @@ export default function OrderShow({ order }) {
           {order?.status}
         </span>
       </div>
-      <div className="order-show-body" style={{ display: isShow ? "flex" : "none" }}>
+      <div
+        className="order-show-body"
+        style={{ display: isShow ? "flex" : "none" }}
+      >
         <ul className="image-slider-gallery">
           {order.order_items &&
             order.order_items.slice(0, 3).map((p, i) => {
@@ -102,7 +131,10 @@ export default function OrderShow({ order }) {
           )}
         </ul>
       </div>
-      <div className="order-show-footer" style={{ display: isShow ? "flex" : "none" }}>
+      <div
+        className="order-show-footer"
+        style={{ display: isShow ? "flex" : "none" }}
+      >
         {order.status === "Delivered" && (
           <div className="shipping-address">
             <p>Shipping Address</p>
@@ -122,6 +154,7 @@ export default function OrderShow({ order }) {
               onClick={(e) => {
                 e.stopPropagation();
                 if (p === "View") handleOpen(order.id);
+                if (p === "Cancel") handleCancell(order.id);
               }}
             >
               {p}

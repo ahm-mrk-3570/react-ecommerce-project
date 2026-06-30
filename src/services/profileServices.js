@@ -15,27 +15,36 @@ export const getProfile = async (user) => {
   return data;
 };
 
-export const forgetPassword = async (email) => {
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo : "http://localhost:5173/react-ecommerce-project/enter-new-password/"
-  })
+export const updateProfile = async (values, userData) => {
+  const { error } = await supabase
+    .from("profiles")
+    .update({
+      first_name: values.first_name,
+      last_name: values.last_name,
+      phone_number: values.phone_number,
+    })
+    .eq("id", userData.id);
 
-  if(error) {
-    console.log(error.message);
-  };
+  if (error) return;
 
   return { error };
-}
+};
 
-export const updatePassword = async (password) => {
+export const updateEmail = async (values) => {
   const { error } = await supabase.auth.updateUser({
-    password
+    email: values.email,
   });
 
-  if(error) {
-    console.log(error);
-    return;
-  }
+  if (error) return;
 
-  return { error }
-}
+  return { error };
+};
+
+export const updateAvatar = async (userId, avatarUrl) => {
+  const { error } = await supabase
+    .from("profiles")
+    .update({ avatar: avatarUrl })
+    .eq("id", userId);
+
+  if (error) throw error;
+};

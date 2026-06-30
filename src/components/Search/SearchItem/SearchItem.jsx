@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "./SearchItem.css";
 
-const SearchItem = ({ id, img, title, description, onClose, setSearch }) => {
+const SearchItem = ({ id, img, title, description, onClose }) => {
   const navigate = useNavigate();
 
   return (
@@ -15,7 +15,6 @@ const SearchItem = ({ id, img, title, description, onClose, setSearch }) => {
         onClick={() => {
           navigate(`/product?id=${id}`);
           onClose();
-          setSearch("");
         }}
       >
         View Product

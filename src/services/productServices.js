@@ -1,5 +1,6 @@
 import { supabase } from "../lib/supabase";
 
+// GET Product specially
 export const getProduct = async (id) => {
   const { data, error } = await supabase
     .from("products")
@@ -56,7 +57,19 @@ export const getProductsBestSeller = async () => {
     .order("total_sold", { ascending: false })
     .limit(8);
 
-  if(error) return;
+  if (error) return;
+
+  return { data, error };
+};
+
+export const searchProducts = async (search) => {
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .ilike("name", `%${search}%`)
+    .limit(10);
+
+  if (error) return;
 
   return { data, error };
 };

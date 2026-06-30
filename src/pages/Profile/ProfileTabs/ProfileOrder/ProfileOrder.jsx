@@ -6,13 +6,12 @@ import "./ProfileOrder.css";
 import AuthContext from "../../../../context/AuthContext";
 import { useContext, useEffect, useRef, useState } from "react";
 import ProfileContext from "../../../../context/ProfileContext";
-import { supabase } from "../../../../lib/supabase";
 import { createPortal } from "react-dom";
 import OrderView from "./OrderView/OrderView";
+import { getOrders } from "../../../../services/orderServices";
 
 export default function ProfileOrder() {
-  const { openOrderView, selectedOrder, setOpenOrderView, setSelectedOrder } =
-    useContext(ProfileContext);
+  const { openOrderView, selectedOrder, setOpenOrderView, setSelectedOrder } = useContext(ProfileContext);
   const { user } = useContext(AuthContext);
   
   const [orders, setOrders] = useState([]);
@@ -22,15 +21,12 @@ export default function ProfileOrder() {
     if (!user) return;
 
     const fetchOrders = async () => {
-      const { data } = await supabase
-        .from("orders")
-        .select(
-          `
-            *,
-            order_items (*)
-          `,
-        )
-        .eq("user_id", user?.id);
+      const { data, error } = await getOrders(user.id)
+      
+      if(error) {
+        console.log(error);
+        return;
+      }
 
       setOrders(data);
     };
@@ -62,7 +58,7 @@ export default function ProfileOrder() {
   return (
     <>
       <title>Orders</title>
-      <OrdersList orders={orders} />
+      <OrdersList orders={orders} setOrders={setOrders} />
       {openOrderView &&
         createPortal(
           <div className="portal-overlay" onClick={handleOverlayClick}>

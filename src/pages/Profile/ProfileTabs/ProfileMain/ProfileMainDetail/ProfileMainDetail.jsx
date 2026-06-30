@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import FormInputBox from "../../../../../components/FormInputBox/FormInputBox";
 import "./ProfileMainDetail.css";
 import AuthContext from "../../../../../context/AuthContext";
@@ -6,6 +6,10 @@ import { updateProfileValidationSchema } from "../../../../../validation/updateP
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { supabase } from "../../../../../lib/supabase";
 import { toast } from "react-toastify";
+import {
+  updateEmail,
+  updateProfile,
+} from "../../../../../services/profileServices";
 
 export default function ProfileMainDetail() {
   const [isEdited, setIsEdited] = useState(true);
@@ -14,32 +18,17 @@ export default function ProfileMainDetail() {
 
   const handleChangeData = async (values) => {
     try {
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .update({
-          first_name: values.first_name,
-          last_name: values.last_name,
-          phone_number: values.phone_number,
-        })
-        .eq("id", userData.id);
+      const { error: profileError } = await updateProfile(values, userData);
 
       if (profileError) return;
 
       if (values.email !== userData.email) {
-        const { error: emailError } = await supabase.auth.updateUser({
-          email: values.email,
-        });
+        const { error: emailError } = await updateEmail(values);
 
         if (emailError) return;
       }
 
       await supabase.auth.refreshSession();
-
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      console.log(user);
 
       toast.success("Profile Updated Successfully");
     } catch (err) {

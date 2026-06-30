@@ -1,36 +1,24 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./Search.css";
 
 import SearchItem from "./SearchItem/SearchItem";
-import { supabase } from "../../lib/supabase";
 
 import _ from "lodash";
+import { searchProducts } from "../../services/productServices";
 
 const Search = ({ onClose }) => {
-  const [search, setSearch] = useState("");
   const [searchItems, setSearchItems] = useState([]);
 
-  const handleChange = (e) => {
-    setSearch(e.target.value);
-  };
+  const handleChange = _.debounce(async (e) => {
+    const { data, error } = await searchProducts(e.target.value);
 
-  useEffect(() => {
-    const fetchSearch = _.debounce(async () => {
-      const { data, error } = await supabase
-        .from("products")
-        .select("*")
-        .ilike("name", `%${search}%`)
-        .limit(10);
+    if (error) {
+      console.log(error.message);
+      return;
+    }
 
-      if (error) {
-        console.log(error.message);
-      }
-
-      setSearchItems(data);
-    }, 1000);
-
-    fetchSearch();
-  }, [search]);
+    setSearchItems(data);
+  }, 500);
 
   return (
     <div className="search-container">
@@ -39,7 +27,6 @@ const Search = ({ onClose }) => {
           <label htmlFor="search-input">Search</label>
           <input
             onChange={handleChange}
-            value={search}
             type="text"
             id="search-input"
           />
@@ -55,7 +42,6 @@ const Search = ({ onClose }) => {
               title={sI.name}
               description={sI.description}
               onClose={onClose}
-              setSearch={setSearch}
             />
           );
         })}

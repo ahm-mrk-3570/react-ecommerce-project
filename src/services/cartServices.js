@@ -44,3 +44,19 @@ export const getTotalPrice = async (userId) => {
 
   return { data };
 };
+
+export const updateQuantity = async (action, cartItem, userId) => {
+  const quantity = action === "increment" ? cartItem.quantity + 1 : cartItem.quantity - 1;
+
+  const { data, error } = await supabase
+    .from("cart_items")
+    .update({ quantity })
+    .eq("user_id", userId)
+    .eq("id", cartItem.id)
+    .select()
+    .single();
+
+  if (error) throw error;
+
+  return { data, error };
+};

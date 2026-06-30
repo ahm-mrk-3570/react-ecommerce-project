@@ -3,7 +3,7 @@ import InputBox from "../../components/InputBox";
 import "./ForegetPage.css";
 import { forgetPasswordSchema } from "../../validation/authValidation";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { forgetPassword } from "../../services/profileServices";
+import { forgetPassword } from "../../services/AuthServices";
 import { toast } from "react-toastify";
 
 export default function ForgetPage() {

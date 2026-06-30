@@ -3,7 +3,7 @@ import InputBox from "../../components/InputBox";
 import "./EnterPassword.css";
 import { enterPasswordSchema } from "../../validation/authValidation";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { updatePassword } from "../../services/profileServices";
+import { updatePassword } from "../../services/AuthServices";
 import { toast } from "react-toastify";
 import { useState } from "react";
 
@@ -16,7 +16,7 @@ const EnterPassword = () => {
     const { error } = await updatePassword(values.password);
 
     if (error) {
-      console.log(error.message);
+      toast.error(error.message);
       return;
     }
 

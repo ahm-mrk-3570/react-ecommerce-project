@@ -1,9 +1,8 @@
 import "./OrderProduct.css";
 import { useContext } from "react";
-import { supabase } from "../../../../lib/supabase";
 import AuthContext from "../../../../context/AuthContext";
 import GlobalContext from "../../../../context/Context";
-import { removeFromCart } from "../../../../services/cartServices";
+import { removeFromCart, updateQuantity } from "../../../../services/cartServices";
 import { toast } from "react-toastify";
 import _ from "lodash";
 
@@ -12,27 +11,13 @@ export default function OrderProduct({ cartItem }) {
   const { setCartItems, refreshCart } = useContext(GlobalContext);
 
   const handleIncrement = _.debounce(async () => {
-    await supabase
-      .from("cart_items")
-      .update({
-        quantity: cartItem.quantity + 1,
-      })
-      .eq("user_id", user.id)
-      .eq("id", cartItem.id);
+    await updateQuantity("increment", cartItem, user.id);
 
     refreshCart();
   }, 500);
 
   const handleDecrement = _.debounce(async () => {
-    const { data, error } = await supabase
-      .from("cart_items")
-      .update({
-        quantity: cartItem.quantity - 1,
-      })
-      .eq("user_id", user.id)
-      .eq("id", cartItem.id)
-      .select()
-      .single();
+    const { data, error } = await updateQuantity("decrement", cartItem, user.id);
 
     if (error) {
       console.log(error.message);
