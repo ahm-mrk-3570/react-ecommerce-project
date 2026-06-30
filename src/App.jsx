@@ -41,6 +41,7 @@ import {
   getCurrentSession,
   subscribeToAuthChange,
 } from "./services/AuthServices";
+import { getProfile } from "./services/profileServices";
 
 function App() {
   /* State */
@@ -154,18 +155,9 @@ function App() {
 
     const fetchProfile = async () => {
       try {
-        const { data, error } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", user.id)
-          .maybeSingle();
+        const { data, error } = await getProfile(user);
 
-        if (error) {
-          console.log(error);
-          console.log("Profile fetch error:", error.message);
-          toast.error(error.message);
-          return;
-        }
+        if (error) return;
 
         if (!data) {
           console.log("No profile found for user:", user.id);

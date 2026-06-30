@@ -4,7 +4,7 @@ export const getProfile = async (user) => {
   const { data, error } = await supabase
     .from("profiles")
     .select("*")
-    .eq("id", user?.id)
+    .eq("id", user.id)
     .maybeSingle();
 
   if (error) {
@@ -12,7 +12,7 @@ export const getProfile = async (user) => {
     return;
   }
 
-  return data;
+  return { data, error };
 };
 
 export const updateProfile = async (values, userData) => {

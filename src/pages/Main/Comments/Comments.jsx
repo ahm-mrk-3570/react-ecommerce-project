@@ -18,7 +18,7 @@ export default function Comments() {
     <div className="comments-main-container container-custom">
       <div className="comments-header">
         <div className="title-comments">
-          <h1>Shop by Categories</h1>
+          <h1>Comments</h1>
         </div>
         <div className="change-comments">
           <button ref={prevRef} className="go-back">
